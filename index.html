@@ -1031,7 +1031,13 @@
         }
 
         function closeModal(event) {
-            if (event && event.target.id !== 'modal-overlay') return;
+            // Called from backdrop click — only close if clicking the overlay itself, not inner modal
+            if (event && event.target && event.target.id !== 'modal-overlay') return;
+            document.getElementById('modal-overlay').classList.remove('show');
+        }
+
+        function closeModalBtn() {
+            // Called directly from Close/Cancel buttons — always closes
             document.getElementById('modal-overlay').classList.remove('show');
         }
 
@@ -1057,7 +1063,7 @@
                     <div id="connection-test-result" style="margin-top:10px;"></div>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal(event)">Close</button>
+                    <button class="btn btn-secondary" onclick="closeModalBtn()">Close</button>
                 </div>
             `);
         }
@@ -1102,7 +1108,7 @@
                 setConnectionStatus('disconnected');
             }
             
-            closeModal({ target: { id: 'modal-overlay' } });
+            closeModalBtn();
         }
 
         async function testConnection() {
@@ -1149,7 +1155,7 @@
                     <input type="text" id="section-title" value="${section.title}" placeholder="e.g., CHILDREN'S DATA">
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
+                    <button class="btn btn-secondary" onclick="closeModalBtn()">Cancel</button>
                     <button class="btn btn-primary" onclick="saveSection(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
                 </div>
             `);
@@ -1169,7 +1175,7 @@
 
             saveAllData();
             renderChecklist();
-            closeModal({ target: { id: 'modal-overlay' } });
+            closeModalBtn();
             showToast('Section saved', 'success');
         }
 
@@ -1212,7 +1218,7 @@
                     </select>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
+                    <button class="btn btn-secondary" onclick="closeModalBtn()">Cancel</button>
                     <button class="btn btn-primary" onclick="saveItem(${sectionIndex}, ${editItemIndex})">${isEdit ? 'Update' : 'Add'}</button>
                 </div>
             `);
@@ -1235,7 +1241,7 @@
             saveAllData();
             renderChecklist();
             updateSummary();
-            closeModal({ target: { id: 'modal-overlay' } });
+            closeModalBtn();
             showToast('Item saved', 'success');
         }
 
@@ -1277,4 +1283,325 @@
                     <div class="form-group"><label>Retention</label><input type="text" id="inv-retention" value="${item.retention}"></div>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
+                    <button class="btn btn-secondary" onclick="closeModalBtn()">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveInventoryItem(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
+                </div>
+            `);
+        }
+
+        function saveInventoryItem(editIndex) {
+            const category = document.getElementById('inv-category').value.trim();
+            const element = document.getElementById('inv-element').value.trim();
+            const classification = document.getElementById('inv-classification').value;
+            const basis = document.getElementById('inv-basis').value.trim();
+            const purpose = document.getElementById('inv-purpose').value.trim();
+            const storage = document.getElementById('inv-storage').value.trim();
+            const retention = document.getElementById('inv-retention').value.trim();
+
+            if (!category || !element) { showToast('Fill required fields', 'error'); return; }
+
+            const newItem = { id: editIndex !== null ? dataInventory[editIndex].id : Date.now(), category, element, classification, basis, purpose, storage, retention };
+
+            if (editIndex !== null) {
+                dataInventory[editIndex] = newItem;
+            } else {
+                dataInventory.push(newItem);
+            }
+
+            saveAllData();
+            renderInventory();
+            closeModalBtn();
+            showToast('Data element saved', 'success');
+
+            if (isConnectedToGoogleSheets) {
+                syncItemToGoogleSheets('inventory', newItem);
+            }
+        }
+
+        function editInventoryItem(index) { openInventoryModal(index); }
+
+        function deleteInventoryItem(index) {
+            if (confirm('Delete this data element?')) {
+                dataInventory.splice(index, 1);
+                saveAllData();
+                renderInventory();
+                showToast('Deleted', 'success');
+            }
+        }
+
+        // ============================================================
+        // PROCESSOR MODAL
+        // ============================================================
+        function openProcessorModal(editIndex = null) {
+            const isEdit = editIndex !== null;
+            const proc = isEdit ? processors[editIndex] : { name: '', data: '', purpose: '', location: '' };
+
+            openModal(`
+                <h2>${isEdit ? '✏️ Edit' : '+ Add'} Processor</h2>
+                <div class="form-group"><label>Processor Name</label><input type="text" id="proc-name" value="${proc.name}" placeholder="e.g., AWS"></div>
+                <div class="form-group"><label>Data Shared</label><input type="text" id="proc-data" value="${proc.data}" placeholder="e.g., Email, Name"></div>
+                <div class="form-group"><label>Purpose</label><input type="text" id="proc-purpose" value="${proc.purpose}" placeholder="e.g., Email delivery"></div>
+                <div class="form-group"><label>Location / Jurisdiction</label><input type="text" id="proc-location" value="${proc.location}" placeholder="e.g., Mumbai (ap-south-1)"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeModalBtn()">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveProcessor(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
+                </div>
+            `);
+        }
+
+        function saveProcessor(editIndex) {
+            const name = document.getElementById('proc-name').value.trim();
+            const data = document.getElementById('proc-data').value.trim();
+            const purpose = document.getElementById('proc-purpose').value.trim();
+            const location = document.getElementById('proc-location').value.trim();
+
+            if (!name) { showToast('Enter processor name', 'error'); return; }
+
+            const newProc = { id: editIndex !== null ? processors[editIndex].id : Date.now(), name, data, purpose, location };
+
+            if (editIndex !== null) {
+                processors[editIndex] = newProc;
+            } else {
+                processors.push(newProc);
+            }
+
+            saveAllData();
+            renderProcessors();
+            closeModalBtn();
+            showToast('Processor saved', 'success');
+
+            if (isConnectedToGoogleSheets) {
+                syncItemToGoogleSheets('processor', { ...newProc, dpa: processorStates[newProc.id]?.dpa || '', status: processorStates[newProc.id]?.status || '' });
+            }
+        }
+
+        function editProcessor(index) { openProcessorModal(index); }
+
+        function deleteProcessor(index) {
+            if (confirm('Delete this processor?')) {
+                processors.splice(index, 1);
+                saveAllData();
+                renderProcessors();
+                showToast('Deleted', 'success');
+            }
+        }
+
+        // ============================================================
+        // ROADMAP MODAL
+        // ============================================================
+        function openRoadmapModal(editIndex = null) {
+            const isEdit = editIndex !== null;
+            const item = isEdit ? roadmap[editIndex] : { phase: '', task: '' };
+
+            openModal(`
+                <h2>${isEdit ? '✏️ Edit' : '+ Add'} Roadmap Task</h2>
+                <div class="form-group"><label>Phase</label>
+                    <select id="road-phase">
+                        <option value="Phase 1" ${item.phase === 'Phase 1' ? 'selected' : ''}>Phase 1</option>
+                        <option value="Phase 2" ${item.phase === 'Phase 2' ? 'selected' : ''}>Phase 2</option>
+                        <option value="Phase 3" ${item.phase === 'Phase 3' ? 'selected' : ''}>Phase 3</option>
+                        <option value="Phase 4" ${item.phase === 'Phase 4' ? 'selected' : ''}>Phase 4</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Task Description</label><textarea id="road-task">${item.task}</textarea></div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeModalBtn()">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveRoadmapItem(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
+                </div>
+            `);
+        }
+
+        function saveRoadmapItem(editIndex) {
+            const phase = document.getElementById('road-phase').value;
+            const task = document.getElementById('road-task').value.trim();
+
+            if (!task) { showToast('Enter task description', 'error'); return; }
+
+            const newItem = { id: editIndex !== null ? roadmap[editIndex].id : Date.now(), phase, task };
+
+            if (editIndex !== null) {
+                roadmap[editIndex] = newItem;
+            } else {
+                roadmap.push(newItem);
+            }
+
+            saveAllData();
+            renderRoadmap();
+            closeModalBtn();
+            showToast('Task saved', 'success');
+        }
+
+        function editRoadmapItem(index) { openRoadmapModal(index); }
+
+        function deleteRoadmapItem(index) {
+            if (confirm('Delete this task?')) {
+                roadmap.splice(index, 1);
+                saveAllData();
+                renderRoadmap();
+                showToast('Deleted', 'success');
+            }
+        }
+
+        // ============================================================
+        // TAB SWITCHING
+        // ============================================================
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+            document.getElementById('tab-' + tabName).style.display = 'block';
+
+            const filterBar = document.getElementById('filter-bar');
+            filterBar.style.display = tabName === 'checklist' ? 'flex' : 'none';
+
+            document.querySelectorAll('.tab').forEach(btn => {
+                if (btn.getAttribute('onclick') === "showTab('" + tabName + "')") {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // ============================================================
+        // FILTER
+        // ============================================================
+        function filterItems() {
+            const statusFilter = document.getElementById('filter-status').value;
+            const priorityFilter = document.getElementById('filter-priority').value;
+            const searchText = document.getElementById('search-box').value.toLowerCase();
+
+            document.querySelectorAll('.checklist-item').forEach(item => {
+                const status = item.dataset.status || '';
+                const priority = item.dataset.priority || '';
+                const text = item.textContent.toLowerCase();
+
+                const statusMatch = statusFilter === 'all' || status === statusFilter;
+                const priorityMatch = priorityFilter === 'all' || priority === priorityFilter;
+                const searchMatch = !searchText || text.includes(searchText);
+
+                item.style.display = (statusMatch && priorityMatch && searchMatch) ? '' : 'none';
+            });
+        }
+
+        // ============================================================
+        // EXPORT / IMPORT / RESET
+        // ============================================================
+        function exportToCSV() {
+            const rows = [['#', 'Section', 'Reference', 'Requirement', 'Action', 'Priority', 'Status', 'Owner']];
+
+            checklistData.forEach(section => {
+                section.items.forEach(item => {
+                    const state = itemStates[item.id] || { status: 'Not Started', owner: '' };
+                    rows.push([
+                        item.id,
+                        section.title,
+                        item.ref,
+                        '"' + item.requirement.replace(/"/g, '""') + '"',
+                        '"' + item.action.replace(/"/g, '""') + '"',
+                        item.priority,
+                        state.status,
+                        state.owner || ''
+                    ]);
+                });
+            });
+
+            const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DPDP_Compliance_' + new Date().toISOString().slice(0,10) + '.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('CSV exported!', 'success');
+        }
+
+        function exportToJSON() {
+            const backup = {
+                exportDate: new Date().toISOString(),
+                checklistData, dataInventory, processors, penalties, roadmap,
+                itemStates, processorStates, penaltyStates, roadmapStates
+            };
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DPDP_Backup_' + new Date().toISOString().slice(0,10) + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Backup downloaded!', 'success');
+        }
+
+        function importFromJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.checklistData) checklistData = data.checklistData;
+                    if (data.dataInventory) dataInventory = data.dataInventory;
+                    if (data.processors) processors = data.processors;
+                    if (data.penalties) penalties = data.penalties;
+                    if (data.roadmap) roadmap = data.roadmap;
+                    if (data.itemStates) itemStates = data.itemStates;
+                    if (data.processorStates) processorStates = data.processorStates;
+                    if (data.penaltyStates) penaltyStates = data.penaltyStates;
+                    if (data.roadmapStates) roadmapStates = data.roadmapStates;
+
+                    saveAllData();
+                    renderChecklist();
+                    renderInventory();
+                    renderProcessors();
+                    renderPenalties();
+                    renderRoadmap();
+                    updateSummary();
+                    showToast('Import successful!', 'success');
+                } catch (err) {
+                    showToast('Invalid backup file', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function resetAll() {
+            if (!confirm('Reset ALL data to defaults? This cannot be undone.')) return;
+
+            checklistData = JSON.parse(JSON.stringify(defaultChecklistData));
+            dataInventory = JSON.parse(JSON.stringify(defaultDataInventory));
+            processors = JSON.parse(JSON.stringify(defaultProcessors));
+            penalties = JSON.parse(JSON.stringify(defaultPenalties));
+            roadmap = JSON.parse(JSON.stringify(defaultRoadmap));
+            itemStates = {};
+            processorStates = {};
+            penaltyStates = {};
+            roadmapStates = {};
+
+            saveAllData();
+            renderChecklist();
+            renderInventory();
+            renderProcessors();
+            renderPenalties();
+            renderRoadmap();
+            updateSummary();
+            showToast('Reset to defaults', 'warning');
+        }
+
+        // ============================================================
+        // TOAST NOTIFICATION
+        // ============================================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => { toast.className = 'toast'; }, 3000);
+        }
+
+    </script>
+</body>
+</html>

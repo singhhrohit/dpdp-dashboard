@@ -5,800 +5,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DPDP Act 2023 - Compliance Dashboard</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #1E3A5F 0%, #2E75B6 100%);
-            color: white;
-            padding: 20px 40px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .header-actions {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: #F39C12;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #E67E22;
-        }
-
-        .btn-export {
-            background: #27AE60;
-            color: white;
-        }
-
-        .btn-export:hover {
-            background: #219A52;
-        }
-
-        .btn-reset {
-            background: #E74C3C;
-            color: white;
-        }
-
-        .btn-reset:hover {
-            background: #C0392B;
-        }
-
-        .btn-secondary {
-            background: #95A5A6;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #7F8C8D;
-        }
-
-        .btn-small {
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-
-        .btn-icon {
-            padding: 5px 8px;
-            font-size: 14px;
-            background: transparent;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .btn-icon:hover {
-            background: #f0f0f0;
-        }
-
-        .btn-icon.delete:hover {
-            background: #FFEBEE;
-            border-color: #E74C3C;
-            color: #E74C3C;
-        }
-
-        .btn-icon.edit:hover {
-            background: #E3F2FD;
-            border-color: #2196F3;
-            color: #2196F3;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Summary Cards */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .summary-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .summary-card h3 {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .summary-card .number {
-            font-size: 36px;
-            font-weight: bold;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #333; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #1E3A5F 0%, #2E75B6 100%); color: white; padding: 20px 40px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .header h1 { font-size: 24px; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .header-actions { position: absolute; right: 40px; top: 50%; transform: translateY(-50%); display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: #F39C12; color: white; }
+        .btn-primary:hover { background: #E67E22; }
+        .btn-export { background: #27AE60; color: white; }
+        .btn-export:hover { background: #219A52; }
+        .btn-reset { background: #E74C3C; color: white; }
+        .btn-reset:hover { background: #C0392B; }
+        .btn-secondary { background: #95A5A6; color: white; }
+        .btn-secondary:hover { background: #7F8C8D; }
+        .btn-small { padding: 5px 10px; font-size: 12px; }
+        .btn-icon { padding: 5px 8px; font-size: 14px; background: transparent; border: 1px solid #ddd; border-radius: 4px; }
+        .btn-icon:hover { background: #f0f0f0; }
+        .btn-icon.delete:hover { background: #FFEBEE; border-color: #E74C3C; color: #E74C3C; }
+        .btn-icon.edit:hover { background: #E3F2FD; border-color: #2196F3; color: #2196F3; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .summary-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .summary-card h3 { font-size: 14px; color: #666; margin-bottom: 10px; text-transform: uppercase; }
+        .summary-card .number { font-size: 36px; font-weight: bold; }
         .summary-card.total .number { color: #1E3A5F; }
         .summary-card.completed .number { color: #27AE60; }
         .summary-card.progress .number { color: #F39C12; }
         .summary-card.not-started .number { color: #E74C3C; }
         .summary-card.na .number { color: #95A5A6; }
-
-        .progress-bar-container {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar-container h3 {
-            margin-bottom: 15px;
-            color: #1E3A5F;
-        }
-
-        .progress-bar {
-            height: 30px;
-            background: #e0e0e0;
-            border-radius: 15px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .progress-segment {
-            height: 100%;
-            transition: width 0.5s ease;
-        }
-
+        .progress-bar-container { background: white; border-radius: 10px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .progress-bar-container h3 { margin-bottom: 15px; color: #1E3A5F; }
+        .progress-bar { height: 30px; background: #e0e0e0; border-radius: 15px; overflow: hidden; display: flex; }
+        .progress-segment { height: 100%; transition: width 0.5s ease; }
         .progress-segment.completed { background: #27AE60; }
         .progress-segment.progress { background: #F39C12; }
         .progress-segment.not-started { background: #E74C3C; }
         .progress-segment.na { background: #95A5A6; }
-
-        .progress-legend {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .tab {
-            padding: 12px 20px;
-            border: none;
-            background: #f0f4f8;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s;
-            color: #666;
-        }
-
-        .tab:hover {
-            background: #e0e8f0;
-        }
-
-        .tab.active {
-            background: #1E3A5F;
-            color: white;
-        }
-
-        /* Checklist Section */
-        .checklist-container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .section-header {
-            background: linear-gradient(135deg, #1E3A5F 0%, #2E75B6 100%);
-            color: white;
-            padding: 15px 20px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .section-header:hover {
-            background: linear-gradient(135deg, #2E4A6F 0%, #3E85C6 100%);
-        }
-
-        .section-header .toggle-icon {
-            font-size: 20px;
-            transition: transform 0.3s;
-        }
-
-        .section-header.collapsed .toggle-icon {
-            transform: rotate(-90deg);
-        }
-
-        .section-header-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .section-header-actions button {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .section-header-actions button:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .section-content {
-            max-height: 5000px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .section-content.collapsed {
-            max-height: 0;
-        }
-
-        .checklist-item {
-            display: grid;
-            grid-template-columns: 60px 90px 1fr 1fr 130px 100px 180px 70px;
-            gap: 10px;
-            padding: 12px 20px;
-            border-bottom: 1px solid #eee;
-            align-items: center;
-            font-size: 13px;
-        }
-
-        .checklist-item:hover {
-            background: #f8fafc;
-        }
-
-        .checklist-item:last-child {
-            border-bottom: none;
-        }
-
-        .item-sr {
-            font-weight: 600;
-            color: #1E3A5F;
-        }
-
-        .item-section {
-            font-size: 11px;
-            color: #666;
-            background: #f0f4f8;
-            padding: 4px 8px;
-            border-radius: 4px;
-            text-align: center;
-        }
-
-        .item-requirement {
-            font-size: 13px;
-        }
-
-        .item-action {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .item-actions {
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-        }
-
-        select {
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 12px;
-            cursor: pointer;
-            background: white;
-            width: 100%;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #2E75B6;
-        }
-
+        .progress-legend { display: flex; justify-content: center; gap: 30px; margin-top: 15px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 4px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .tab { padding: 12px 20px; border: none; background: #f0f4f8; cursor: pointer; border-radius: 5px; font-size: 14px; font-weight: 500; transition: all 0.3s; color: #666; }
+        .tab:hover { background: #e0e8f0; }
+        .tab.active { background: #1E3A5F; color: white; }
+        .checklist-container { background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
+        .section-header { background: linear-gradient(135deg, #1E3A5F 0%, #2E75B6 100%); color: white; padding: 15px 20px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .section-header:hover { background: linear-gradient(135deg, #2E4A6F 0%, #3E85C6 100%); }
+        .section-header .toggle-icon { font-size: 20px; transition: transform 0.3s; }
+        .section-header.collapsed .toggle-icon { transform: rotate(-90deg); }
+        .section-header-actions { display: flex; gap: 10px; align-items: center; }
+        .section-header-actions button { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .section-header-actions button:hover { background: rgba(255,255,255,0.3); }
+        .section-content { max-height: 5000px; overflow: hidden; transition: max-height 0.3s ease; }
+        .section-content.collapsed { max-height: 0; }
+        .checklist-item { display: grid; grid-template-columns: 60px 90px 1fr 1fr 130px 100px 180px 70px; gap: 10px; padding: 12px 20px; border-bottom: 1px solid #eee; align-items: center; font-size: 13px; }
+        .checklist-item:hover { background: #f8fafc; }
+        .checklist-item:last-child { border-bottom: none; }
+        .item-sr { font-weight: 600; color: #1E3A5F; }
+        .item-section { font-size: 11px; color: #666; background: #f0f4f8; padding: 4px 8px; border-radius: 4px; text-align: center; }
+        .item-requirement { font-size: 13px; }
+        .item-action { font-size: 12px; color: #666; }
+        .item-actions { display: flex; gap: 5px; justify-content: center; }
+        select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 12px; cursor: pointer; background: white; width: 100%; }
+        select:focus { outline: none; border-color: #2E75B6; }
         select.status-completed { background: #E8F5E9; border-color: #27AE60; }
         select.status-in-progress { background: #FFF8E1; border-color: #F39C12; }
         select.status-not-started { background: #FFEBEE; border-color: #E74C3C; }
-        select.status-n\/a { background: #ECEFF1; border-color: #95A5A6; }
-
-        input[type="text"], input[type="date"] {
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 12px;
-            width: 100%;
-        }
-
-        input[type="text"]:focus, input[type="date"]:focus {
-            outline: none;
-            border-color: #2E75B6;
-        }
-
-        textarea {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 13px;
-            width: 100%;
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #2E75B6;
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
-
-        .modal h2 {
-            color: #1E3A5F;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #E8F4FC;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .form-group .hint {
-            font-size: 12px;
-            color: #666;
-            margin-top: 3px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-
-        /* Data Inventory Tab */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table th {
-            background: #1E3A5F;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-size: 13px;
-        }
-
-        .data-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
-        }
-
-        .data-table tr:hover {
-            background: #f8fafc;
-        }
-
-        .pii-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
+        select.status-na { background: #ECEFF1; border-color: #95A5A6; }
+        input[type="text"], input[type="date"] { padding: 6px 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 12px; width: 100%; }
+        input[type="text"]:focus, input[type="date"]:focus { outline: none; border-color: #2E75B6; }
+        textarea { padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; width: 100%; resize: vertical; min-height: 60px; }
+        textarea:focus { outline: none; border-color: #2E75B6; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-overlay.show { display: flex; }
+        .modal { background: white; border-radius: 10px; padding: 30px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .modal h2 { color: #1E3A5F; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E8F4FC; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; }
+        .form-group .hint { font-size: 12px; color: #666; margin-top: 3px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { background: #1E3A5F; color: white; padding: 12px; text-align: left; font-size: 13px; }
+        .data-table td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; }
+        .data-table tr:hover { background: #f8fafc; }
+        .pii-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .pii-badge.pii { background: #FFEBEE; color: #C62828; }
         .pii-badge.sensitive { background: #FCE4EC; color: #AD1457; }
         .pii-badge.non-pii { background: #E8F5E9; color: #2E7D32; }
-
-        /* Third Party Tab */
-        .processor-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 120px 80px;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .processor-card h4 {
-            color: #1E3A5F;
-            margin-bottom: 5px;
-        }
-
-        .processor-card p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* Penalty Tab */
-        .penalty-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 5px solid #E74C3C;
-        }
-
-        .penalty-card.mitigated {
-            border-left-color: #27AE60;
-        }
-
-        .penalty-card.partial {
-            border-left-color: #F39C12;
-        }
-
-        .penalty-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .penalty-amount {
-            font-size: 24px;
-            font-weight: bold;
-            color: #E74C3C;
-        }
-
-        /* Filter */
-        .filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-bar label {
-            font-weight: 500;
-            color: #666;
-        }
-
-        .search-box {
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            width: 250px;
-        }
-
-        /* Add Section Button */
-        .add-section-btn {
-            width: 100%;
-            padding: 15px;
-            margin-top: 15px;
-            background: #f8fafc;
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #666;
-            transition: all 0.3s;
-        }
-
-        .add-section-btn:hover {
-            background: #e8f4fc;
-            border-color: #2E75B6;
-            color: #2E75B6;
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .checklist-item {
-                grid-template-columns: 50px 70px 1fr;
-                gap: 8px;
-            }
-            .checklist-item > *:nth-child(n+4) {
-                grid-column: 1 / -1;
-            }
-            .header-actions {
-                position: static;
-                transform: none;
-                margin-top: 15px;
-                justify-content: flex-start;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .summary-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .processor-card {
-                grid-template-columns: 1fr;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1E3A5F;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
+        .processor-card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr 1fr 120px 80px; gap: 15px; align-items: center; }
+        .processor-card h4 { color: #1E3A5F; margin-bottom: 5px; }
+        .processor-card p { font-size: 12px; color: #666; }
+        .penalty-card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 5px solid #E74C3C; }
+        .penalty-card.mitigated { border-left-color: #27AE60; }
+        .penalty-card.partial { border-left-color: #F39C12; }
+        .penalty-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .penalty-amount { font-size: 24px; font-weight: bold; color: #E74C3C; }
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+        .filter-bar label { font-weight: 500; color: #666; }
+        .search-box { padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; width: 250px; }
+        .add-section-btn { width: 100%; padding: 15px; margin-top: 15px; background: #f8fafc; border: 2px dashed #ccc; border-radius: 10px; cursor: pointer; font-size: 14px; color: #666; transition: all 0.3s; }
+        .add-section-btn:hover { background: #e8f4fc; border-color: #2E75B6; color: #2E75B6; }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: #1E3A5F; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 1000; }
+        .toast.show { transform: translateY(0); opacity: 1; }
         .toast.success { background: #27AE60; }
         .toast.error { background: #E74C3C; }
         .toast.warning { background: #F39C12; }
-
-        /* Google Sheets Connection Status */
-        .connection-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #E8F5E9;
-            color: #2E7D32;
-            padding: 8px 20px;
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 200;
-            border-bottom: 1px solid #C8E6C9;
-        }
-        .connection-bar.disconnected {
-            background: #FFF3E0;
-            color: #E65100;
-            border-bottom-color: #FFE0B2;
-        }
-        .connection-bar.syncing {
-            background: #E3F2FD;
-            color: #1565C0;
-            border-bottom-color: #BBDEFB;
-        }
-        .connection-bar .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            background: #4CAF50;
-        }
+        .connection-bar { position: fixed; top: 0; left: 0; right: 0; background: #E8F5E9; color: #2E7D32; padding: 8px 20px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; z-index: 200; border-bottom: 1px solid #C8E6C9; }
+        .connection-bar.disconnected { background: #FFF3E0; color: #E65100; border-bottom-color: #FFE0B2; }
+        .connection-bar.syncing { background: #E3F2FD; color: #1565C0; border-bottom-color: #BBDEFB; }
+        .connection-bar .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; background: #4CAF50; }
         .connection-bar.disconnected .status-dot { background: #FF9800; }
         .connection-bar.syncing .status-dot { background: #2196F3; animation: pulse 1s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .connection-bar button {
-            padding: 4px 12px;
-            border: none;
-            background: rgba(0,0,0,0.1);
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
+        .connection-bar button { padding: 4px 12px; border: none; background: rgba(0,0,0,0.1); border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px; }
         .connection-bar button:hover { background: rgba(0,0,0,0.2); }
+        .connection-bar button.active { background: #4CAF50; color: white; }
         body.has-connection-bar .header { margin-top: 40px; }
-        
-        /* Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
         .loading-overlay.hidden { display: none; }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1E3A5F;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        .spinner { width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid #1E3A5F; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-text { margin-top: 20px; color: #1E3A5F; font-size: 16px; }
-
-        /* Admin Panel Info */
-        .admin-info {
-            background: #FFF8E1;
-            border: 1px solid #FFE082;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .admin-info { background: #FFF8E1; border: 1px solid #FFE082; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .admin-info-icon { font-size: 24px; }
+        .admin-info-text { flex: 1; }
+        .admin-info-text h4 { color: #F57C00; margin-bottom: 3px; }
+        .admin-info-text p { font-size: 13px; color: #666; }
+        @media (max-width: 1200px) {
+            .checklist-item { grid-template-columns: 50px 70px 1fr; gap: 8px; }
+            .checklist-item > *:nth-child(n+4) { grid-column: 1 / -1; }
+            .header-actions { position: static; transform: none; margin-top: 15px; justify-content: flex-start; }
         }
-
-        .admin-info-icon {
-            font-size: 24px;
-        }
-
-        .admin-info-text {
-            flex: 1;
-        }
-
-        .admin-info-text h4 {
-            color: #F57C00;
-            margin-bottom: 3px;
-        }
-
-        .admin-info-text p {
-            font-size: 13px;
-            color: #666;
-        }
-
-        /* Import Section */
-        .import-section {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .import-section h4 {
-            margin-bottom: 15px;
-            color: #1E3A5F;
-        }
-
-        .import-section input[type="file"] {
-            margin-bottom: 10px;
+        @media (max-width: 768px) {
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .processor-card { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
     <div class="loading-overlay hidden" id="loading-overlay">
         <div class="spinner"></div>
         <div class="loading-text" id="loading-text">Connecting to Google Sheets...</div>
     </div>
 
-    <!-- Connection Status Bar -->
     <div class="connection-bar disconnected" id="connection-bar" style="display:none;">
         <div>
             <span class="status-dot"></span>
-            <span id="connection-status-text">Not connected to Google Sheets</span>
+            <span id="connection-status-text">Not connected</span>
             <span id="last-sync-time" style="margin-left:15px; opacity:0.7;"></span>
         </div>
         <div>
-            <span id="user-name-display" style="margin-right:15px;"></span>
+            <span id="user-name-display" style="margin-right:10px;"></span>
             <button onclick="refreshFromGoogleSheets()">🔄 Refresh</button>
+            <button id="auto-refresh-btn" onclick="toggleAutoRefresh()">⏱️ Auto: ON</button>
             <button onclick="openAdminPanel()">⚙️ Settings</button>
         </div>
     </div>
@@ -817,31 +180,14 @@
     </div>
 
     <div class="container">
-        <!-- Summary Cards -->
         <div class="summary-grid">
-            <div class="summary-card total">
-                <h3>Total Items</h3>
-                <div class="number" id="total-count">0</div>
-            </div>
-            <div class="summary-card completed">
-                <h3>Completed</h3>
-                <div class="number" id="completed-count">0</div>
-            </div>
-            <div class="summary-card progress">
-                <h3>In Progress</h3>
-                <div class="number" id="progress-count">0</div>
-            </div>
-            <div class="summary-card not-started">
-                <h3>Not Started</h3>
-                <div class="number" id="not-started-count">0</div>
-            </div>
-            <div class="summary-card na">
-                <h3>N/A</h3>
-                <div class="number" id="na-count">0</div>
-            </div>
+            <div class="summary-card total"><h3>Total Items</h3><div class="number" id="total-count">0</div></div>
+            <div class="summary-card completed"><h3>Completed</h3><div class="number" id="completed-count">0</div></div>
+            <div class="summary-card progress"><h3>In Progress</h3><div class="number" id="progress-count">0</div></div>
+            <div class="summary-card not-started"><h3>Not Started</h3><div class="number" id="not-started-count">0</div></div>
+            <div class="summary-card na"><h3>N/A</h3><div class="number" id="na-count">0</div></div>
         </div>
 
-        <!-- Progress Bar -->
         <div class="progress-bar-container">
             <h3>Overall Compliance Progress: <span id="compliance-percent">0%</span></h3>
             <div class="progress-bar">
@@ -858,7 +204,6 @@
             </div>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
             <button class="tab active" onclick="showTab('checklist')">📝 Compliance Checklist</button>
             <button class="tab" onclick="showTab('inventory')">🗄️ Data Inventory</button>
@@ -867,7 +212,6 @@
             <button class="tab" onclick="showTab('roadmap')">🗓️ Roadmap</button>
         </div>
 
-        <!-- Filter Bar -->
         <div class="filter-bar" id="filter-bar">
             <label>Filter:</label>
             <select id="filter-status" onchange="filterItems()">
@@ -886,7 +230,6 @@
             <input type="text" class="search-box" id="search-box" placeholder="🔍 Search requirements..." oninput="filterItems()">
         </div>
 
-        <!-- Tab Contents -->
         <div id="tab-checklist" class="tab-content">
             <div class="checklist-container" id="checklist-container"></div>
             <button class="add-section-btn" onclick="openSectionModal()">+ Add New Section</button>
@@ -898,19 +241,7 @@
             </div>
             <div class="checklist-container">
                 <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Category</th>
-                            <th>Data Element</th>
-                            <th>Classification</th>
-                            <th>Lawful Basis</th>
-                            <th>Purpose</th>
-                            <th>Storage</th>
-                            <th>Retention</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>#</th><th>Category</th><th>Data Element</th><th>Classification</th><th>Lawful Basis</th><th>Purpose</th><th>Storage</th><th>Retention</th><th>Actions</th></tr></thead>
                     <tbody id="inventory-body"></tbody>
                 </table>
             </div>
@@ -933,42 +264,36 @@
             </div>
             <div class="checklist-container">
                 <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Phase</th>
-                            <th>Task</th>
-                            <th>Status</th>
-                            <th>Owner</th>
-                            <th>Target Date</th>
-                            <th>Notes</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Phase</th><th>Task</th><th>Status</th><th>Owner</th><th>Target Date</th><th>Notes</th><th>Actions</th></tr></thead>
                     <tbody id="roadmap-body"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal Overlay -->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-        <div class="modal" id="modal-content" onclick="event.stopPropagation()">
-            <!-- Dynamic content -->
-        </div>
+        <div class="modal" id="modal-content" onclick="event.stopPropagation()"></div>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
         // ============================================================
-        // GOOGLE SHEETS INTEGRATION CONFIG
+        // CONFIGURATION
         // ============================================================
         let GOOGLE_SHEETS_API_URL = localStorage.getItem('dpdp_google_api_url') || '';
         let currentUserName = localStorage.getItem('dpdp_user_name') || '';
         let isConnectedToGoogleSheets = false;
         let lastSyncTime = null;
 
-        // Google Sheets API Functions
+        // Auto-refresh settings
+        let autoRefreshInterval = null;
+        let autoRefreshEnabled = localStorage.getItem('dpdp_auto_refresh') !== 'false';
+        let autoRefreshSeconds = 30;
+
+        // ============================================================
+        // GOOGLE SHEETS API - FIXED VERSION
+        // ============================================================
         async function callGoogleSheetsAPI(action, params = {}) {
             if (!GOOGLE_SHEETS_API_URL) return null;
             
@@ -978,11 +303,21 @@
                 url.searchParams.append('user', currentUserName || 'Unknown');
                 
                 for (const [key, value] of Object.entries(params)) {
-                    url.searchParams.append(key, typeof value === 'object' ? JSON.stringify(value) : value);
+                    if (value !== undefined && value !== null) {
+                        url.searchParams.append(key, typeof value === 'object' ? JSON.stringify(value) : String(value));
+                    }
                 }
                 
+                // Cache-busting to prevent stale data
+                url.searchParams.append('_t', Date.now());
+                
                 setConnectionStatus('syncing');
-                const response = await fetch(url.toString());
+                
+                const response = await fetch(url.toString(), {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                
                 const result = await response.json();
                 
                 if (result.success) {
@@ -991,6 +326,7 @@
                     updateLastSyncDisplay();
                     return result.data;
                 } else {
+                    console.error('API Error:', result.error);
                     setConnectionStatus('disconnected');
                     return null;
                 }
@@ -1013,7 +349,7 @@
             } else if (status === 'syncing') {
                 text.textContent = 'Syncing...';
             } else {
-                text.textContent = 'Not connected to Google Sheets (using local storage)';
+                text.textContent = 'Not connected (using local storage)';
                 isConnectedToGoogleSheets = false;
             }
         }
@@ -1022,6 +358,107 @@
             const el = document.getElementById('last-sync-time');
             if (lastSyncTime) {
                 el.textContent = 'Last sync: ' + lastSyncTime.toLocaleTimeString();
+            }
+        }
+
+        // ============================================================
+        // AUTO-REFRESH SYSTEM
+        // ============================================================
+        function startAutoRefresh() {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+            if (!autoRefreshEnabled || !GOOGLE_SHEETS_API_URL) return;
+
+            autoRefreshInterval = setInterval(async () => {
+                if (!isConnectedToGoogleSheets || document.hidden) return;
+                console.log('Auto-refreshing...');
+                await silentRefresh();
+            }, autoRefreshSeconds * 1000);
+            
+            updateAutoRefreshButton();
+        }
+
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+            updateAutoRefreshButton();
+        }
+
+        function toggleAutoRefresh() {
+            autoRefreshEnabled = !autoRefreshEnabled;
+            localStorage.setItem('dpdp_auto_refresh', autoRefreshEnabled);
+            
+            if (autoRefreshEnabled) {
+                startAutoRefresh();
+                showToast('Auto-refresh ON (every ' + autoRefreshSeconds + 's)', 'success');
+            } else {
+                stopAutoRefresh();
+                showToast('Auto-refresh OFF', 'warning');
+            }
+        }
+
+        function updateAutoRefreshButton() {
+            const btn = document.getElementById('auto-refresh-btn');
+            if (btn) {
+                btn.textContent = autoRefreshEnabled ? '⏱️ Auto: ON' : '⏱️ Auto: OFF';
+                btn.className = autoRefreshEnabled ? 'active' : '';
+            }
+        }
+
+        async function silentRefresh() {
+            const data = await callGoogleSheetsAPI('getAllData');
+            if (!data) return;
+
+            let hasChanges = false;
+
+            if (data.checklist) {
+                data.checklist.forEach(item => {
+                    const newState = { status: item.Status || 'Not Started', owner: item.Owner || '' };
+                    const current = itemStates[item.ItemID];
+                    if (!current || current.status !== newState.status || current.owner !== newState.owner) {
+                        itemStates[item.ItemID] = newState;
+                        hasChanges = true;
+                    }
+                });
+            }
+
+            if (data.processors) {
+                data.processors.forEach(item => {
+                    const newState = { dpa: item.DPA || '', status: item.ComplianceStatus || '' };
+                    const current = processorStates[item.ID];
+                    if (!current || current.dpa !== newState.dpa || current.status !== newState.status) {
+                        processorStates[item.ID] = newState;
+                        hasChanges = true;
+                    }
+                });
+            }
+
+            if (data.penalties) {
+                data.penalties.forEach(item => {
+                    const newState = { risk: item.Risk || '', mitigation: item.Mitigation || '' };
+                    const current = penaltyStates[item.ID];
+                    if (!current || current.risk !== newState.risk || current.mitigation !== newState.mitigation) {
+                        penaltyStates[item.ID] = newState;
+                        hasChanges = true;
+                    }
+                });
+            }
+
+            if (data.roadmap) {
+                data.roadmap.forEach(item => {
+                    const newState = { status: item.Status || '', owner: item.Owner || '', date: item.TargetDate || '', notes: item.Notes || '' };
+                    roadmapStates[item.ID] = newState;
+                });
+            }
+
+            if (hasChanges) {
+                renderChecklist();
+                renderProcessors();
+                renderPenalties();
+                renderRoadmap();
+                updateSummary();
+                saveAllData();
             }
         }
 
@@ -1034,71 +471,40 @@
                 const data = await callGoogleSheetsAPI('getAllData');
                 
                 if (data) {
-                    // Merge checklist states from Google Sheets
-                    if (data.checklist && data.checklist.length > 0) {
+                    if (data.checklist) {
                         data.checklist.forEach(item => {
-                            itemStates[item.ItemID] = { 
-                                status: item.Status || 'Not Started', 
-                                owner: item.Owner || '' 
-                            };
+                            itemStates[item.ItemID] = { status: item.Status || 'Not Started', owner: item.Owner || '' };
                         });
                     }
                     
-                    // Merge inventory
                     if (data.inventory && data.inventory.length > 0) {
                         dataInventory = data.inventory.map(item => ({
-                            id: item.ID,
-                            category: item.Category,
-                            element: item.Element,
-                            classification: item.Classification,
-                            basis: item.Basis,
-                            purpose: item.Purpose,
-                            storage: item.Storage,
-                            retention: item.Retention
+                            id: item.ID, category: item.Category, element: item.Element,
+                            classification: item.Classification, basis: item.Basis,
+                            purpose: item.Purpose, storage: item.Storage, retention: item.Retention
                         }));
                     }
                     
-                    // Merge processors
                     if (data.processors && data.processors.length > 0) {
                         processors = data.processors.map(item => ({
-                            id: item.ID,
-                            name: item.Name,
-                            data: item.Data,
-                            purpose: item.Purpose,
-                            location: item.Location
+                            id: item.ID, name: item.Name, data: item.Data,
+                            purpose: item.Purpose, location: item.Location
                         }));
                         data.processors.forEach(item => {
-                            processorStates[item.ID] = { 
-                                dpa: item.DPA || '', 
-                                status: item.ComplianceStatus || '' 
-                            };
+                            processorStates[item.ID] = { dpa: item.DPA || '', status: item.ComplianceStatus || '' };
                         });
                     }
                     
-                    // Merge penalties
-                    if (data.penalties && data.penalties.length > 0) {
+                    if (data.penalties) {
                         data.penalties.forEach(item => {
-                            penaltyStates[item.ID] = { 
-                                risk: item.Risk || '', 
-                                mitigation: item.Mitigation || '' 
-                            };
+                            penaltyStates[item.ID] = { risk: item.Risk || '', mitigation: item.Mitigation || '' };
                         });
                     }
                     
-                    // Merge roadmap
                     if (data.roadmap && data.roadmap.length > 0) {
-                        roadmap = data.roadmap.map(item => ({
-                            id: item.ID,
-                            phase: item.Phase,
-                            task: item.Task
-                        }));
+                        roadmap = data.roadmap.map(item => ({ id: item.ID, phase: item.Phase, task: item.Task }));
                         data.roadmap.forEach(item => {
-                            roadmapStates[item.ID] = { 
-                                status: item.Status || '', 
-                                owner: item.Owner || '', 
-                                date: item.TargetDate || '', 
-                                notes: item.Notes || '' 
-                            };
+                            roadmapStates[item.ID] = { status: item.Status || '', owner: item.Owner || '', date: item.TargetDate || '', notes: item.Notes || '' };
                         });
                     }
                     
@@ -1109,43 +515,38 @@
                 hideLoading();
                 return false;
             } catch (error) {
-                console.error('Failed to load from Google Sheets:', error);
+                console.error('Failed to load:', error);
                 hideLoading();
                 return false;
             }
         }
 
-        async function syncToGoogleSheets() {
-            if (!GOOGLE_SHEETS_API_URL || !isConnectedToGoogleSheets) return;
+        async function syncItemToGoogleSheets(type, data) {
+            if (!GOOGLE_SHEETS_API_URL || !isConnectedToGoogleSheets) return false;
             
-            // Sync checklist states
-            for (const [itemId, state] of Object.entries(itemStates)) {
-                await callGoogleSheetsAPI('updateChecklist', {
-                    itemId: itemId,
-                    status: state.status || 'Not Started',
-                    owner: state.owner || ''
-                });
-            }
-            
-            // Sync inventory
-            for (const item of dataInventory) {
-                await callGoogleSheetsAPI('updateInventory', { data: item });
-            }
-            
-            // Sync processors
-            for (const proc of processors) {
-                const state = processorStates[proc.id] || {};
-                await callGoogleSheetsAPI('updateProcessor', { 
-                    data: { ...proc, dpa: state.dpa || '', status: state.status || '' } 
-                });
-            }
-            
-            // Sync roadmap
-            for (const item of roadmap) {
-                const state = roadmapStates[item.id] || {};
-                await callGoogleSheetsAPI('updateRoadmap', { 
-                    data: { ...item, ...state } 
-                });
+            try {
+                let result;
+                switch(type) {
+                    case 'checklist':
+                        result = await callGoogleSheetsAPI('updateChecklist', { itemId: data.itemId, status: data.status, owner: data.owner });
+                        break;
+                    case 'inventory':
+                        result = await callGoogleSheetsAPI('updateInventory', { data: data });
+                        break;
+                    case 'processor':
+                        result = await callGoogleSheetsAPI('updateProcessor', { data: data });
+                        break;
+                    case 'penalty':
+                        result = await callGoogleSheetsAPI('updatePenalty', { id: data.id, risk: data.risk, mitigation: data.mitigation });
+                        break;
+                    case 'roadmap':
+                        result = await callGoogleSheetsAPI('updateRoadmap', { data: data });
+                        break;
+                }
+                return !!result;
+            } catch (error) {
+                console.error('Sync error:', error);
+                return false;
             }
         }
 
@@ -1157,9 +558,9 @@
                 renderPenalties();
                 renderRoadmap();
                 updateSummary();
-                showToast('Data refreshed from Google Sheets', 'success');
+                showToast('Data refreshed!', 'success');
             } else {
-                showToast('Could not refresh from Google Sheets', 'error');
+                showToast('Refresh failed', 'error');
             }
         }
 
@@ -1172,7 +573,9 @@
             document.getElementById('loading-overlay').classList.add('hidden');
         }
 
-        // Default Data
+        // ============================================================
+        // DEFAULT DATA
+        // ============================================================
         const defaultChecklistData = [
             { section: "SECTION 4", title: "LAWFUL BASIS FOR PROCESSING", items: [
                 { id: 1, ref: "Sec 4(1)", requirement: "Document all lawful purposes for processing personal data", action: "Create data processing register mapping each data element to purpose", priority: "High" },
@@ -1192,69 +595,26 @@
                 { id: 11, ref: "Sec 6(1)", requirement: "Consent must be free, specific, informed, unconditional", action: "Design granular consent UI with clear language", priority: "High" },
                 { id: 12, ref: "Sec 6(1)", requirement: "Consent through clear affirmative action", action: "Implement explicit consent checkboxes (no pre-ticked)", priority: "High" },
                 { id: 13, ref: "Sec 6(1)", requirement: "Limit consent to necessary personal data", action: "Review and minimize data collection per purpose", priority: "High" },
-                { id: 14, ref: "Sec 6(2)", requirement: "Invalid consent provisions are void", action: "Legal review of consent terms for compliance", priority: "Medium" },
-                { id: 15, ref: "Sec 6(3)", requirement: "Consent request in clear and plain language", action: "Simplify consent language, avoid legal jargon", priority: "Medium" },
-                { id: 16, ref: "Sec 6(3)", requirement: "Include DPO/authorized person contact details", action: "Add contact information to consent forms", priority: "Medium" },
-                { id: 17, ref: "Sec 6(4)", requirement: "Right to withdraw consent with same ease as giving", action: "Create one-click consent withdrawal feature", priority: "High" },
-                { id: 18, ref: "Sec 6(6)", requirement: "Cease processing upon consent withdrawal", action: "Automate processing stop on withdrawal", priority: "High" },
-                { id: 19, ref: "Sec 6(7)", requirement: "Optional: Integrate Consent Manager", action: "Evaluate registered Consent Manager integration", priority: "Low" },
-                { id: 20, ref: "Sec 6(10)", requirement: "Maintain proof of consent", action: "Implement consent audit trail with timestamps", priority: "High" },
-            ]},
-            { section: "SECTION 7", title: "LEGITIMATE USES (WITHOUT CONSENT)", items: [
-                { id: 21, ref: "Sec 7(a)", requirement: "Voluntarily provided data for specified purpose", action: "Document voluntary data provision scenarios", priority: "Medium" },
-                { id: 22, ref: "Sec 7(e)", requirement: "Processing for court orders/judgments", action: "Create process for legal compliance requests", priority: "Low" },
-                { id: 23, ref: "Sec 7(i)", requirement: "Employment-related processing (for employees)", action: "Update employee data processing policies", priority: "Medium" },
+                { id: 14, ref: "Sec 6(4)", requirement: "Right to withdraw consent with same ease as giving", action: "Create one-click consent withdrawal feature", priority: "High" },
+                { id: 15, ref: "Sec 6(6)", requirement: "Cease processing upon consent withdrawal", action: "Automate processing stop on withdrawal", priority: "High" },
+                { id: 16, ref: "Sec 6(10)", requirement: "Maintain proof of consent", action: "Implement consent audit trail with timestamps", priority: "High" },
             ]},
             { section: "SECTION 8", title: "DATA FIDUCIARY OBLIGATIONS", items: [
-                { id: 24, ref: "Sec 8(1)", requirement: "Responsibility for compliance despite agreements", action: "Review all contracts for DPDP compliance clauses", priority: "High" },
-                { id: 25, ref: "Sec 8(2)", requirement: "Valid contract with Data Processors", action: "Execute DPAs with SMS Gateway, MoEngage, AWS", priority: "High" },
-                { id: 26, ref: "Sec 8(3)", requirement: "Ensure data completeness, accuracy, consistency", action: "Implement email/mobile verification at registration", priority: "Medium" },
-                { id: 27, ref: "Sec 8(4)", requirement: "Technical measures for compliance", action: "Document all technical security measures", priority: "High" },
-                { id: 28, ref: "Sec 8(4)", requirement: "Organizational measures for compliance", action: "Create data protection policies and procedures", priority: "High" },
-                { id: 29, ref: "Sec 8(5)", requirement: "Security safeguards - Encryption at rest", action: "Enable AWS RDS encryption for MySQL", priority: "High" },
-                { id: 30, ref: "Sec 8(5)", requirement: "Security safeguards - Encryption in transit", action: "Implement TLS/HTTPS for all communications", priority: "High" },
-                { id: 31, ref: "Sec 8(5)", requirement: "Security safeguards - Access controls", action: "Implement IAM, least privilege, MFA", priority: "High" },
-                { id: 32, ref: "Sec 8(5)", requirement: "Security safeguards - Password security", action: "Use bcrypt/Argon2 for password hashing", priority: "High" },
-                { id: 33, ref: "Sec 8(5)", requirement: "Security safeguards - Monitoring", action: "Enable CloudTrail, CloudWatch, GuardDuty", priority: "High" },
-                { id: 34, ref: "Sec 8(5)", requirement: "Security safeguards - Testing", action: "Conduct annual penetration testing", priority: "Medium" },
-                { id: 35, ref: "Sec 8(6)", requirement: "Breach notification to Board", action: "Create breach notification procedure for Board", priority: "High" },
-                { id: 36, ref: "Sec 8(6)", requirement: "Breach notification to affected Data Principals", action: "Create user breach notification templates", priority: "High" },
-                { id: 37, ref: "Sec 8(7)(a)", requirement: "Erase data on consent withdrawal", action: "Implement automated data deletion workflow", priority: "High" },
-                { id: 38, ref: "Sec 8(7)(a)", requirement: "Erase data when purpose no longer served", action: "Define and implement retention periods", priority: "High" },
-                { id: 39, ref: "Sec 8(7)(b)", requirement: "Ensure processors also erase data", action: "Include deletion clauses in DPAs", priority: "High" },
-                { id: 40, ref: "Sec 8(9)", requirement: "Publish DPO/contact person details", action: "Add DPO contact on website and app", priority: "Medium" },
-                { id: 41, ref: "Sec 8(10)", requirement: "Effective grievance redressal mechanism", action: "Create grievance handling process and tracking", priority: "High" },
+                { id: 17, ref: "Sec 8(1)", requirement: "Responsibility for compliance despite agreements", action: "Review all contracts for DPDP compliance clauses", priority: "High" },
+                { id: 18, ref: "Sec 8(2)", requirement: "Valid contract with Data Processors", action: "Execute DPAs with SMS Gateway, MoEngage, AWS", priority: "High" },
+                { id: 19, ref: "Sec 8(3)", requirement: "Ensure data completeness, accuracy, consistency", action: "Implement email/mobile verification at registration", priority: "Medium" },
+                { id: 20, ref: "Sec 8(5)", requirement: "Security safeguards - Encryption at rest", action: "Enable AWS RDS encryption for MySQL", priority: "High" },
+                { id: 21, ref: "Sec 8(5)", requirement: "Security safeguards - Encryption in transit", action: "Implement TLS/HTTPS for all communications", priority: "High" },
+                { id: 22, ref: "Sec 8(5)", requirement: "Security safeguards - Access controls", action: "Implement IAM, least privilege, MFA", priority: "High" },
+                { id: 23, ref: "Sec 8(6)", requirement: "Breach notification to Board", action: "Create breach notification procedure for Board", priority: "High" },
+                { id: 24, ref: "Sec 8(6)", requirement: "Breach notification to affected Data Principals", action: "Create user breach notification templates", priority: "High" },
+                { id: 25, ref: "Sec 8(7)(a)", requirement: "Erase data on consent withdrawal", action: "Implement automated data deletion workflow", priority: "High" },
+                { id: 26, ref: "Sec 8(10)", requirement: "Effective grievance redressal mechanism", action: "Create grievance handling process and tracking", priority: "High" },
             ]},
-            { section: "SECTION 11", title: "RIGHT TO ACCESS INFORMATION", items: [
-                { id: 42, ref: "Sec 11(1)(a)", requirement: "Provide summary of personal data processed", action: "Create data access request feature", priority: "High" },
-                { id: 43, ref: "Sec 11(1)(b)", requirement: "Disclose identities of processors data shared with", action: "Document and disclose processor list", priority: "Medium" },
-            ]},
-            { section: "SECTION 12", title: "RIGHT TO CORRECTION AND ERASURE", items: [
-                { id: 44, ref: "Sec 12(1)", requirement: "Right to correction, completion, updating, erasure", action: "Implement profile editing and deletion features", priority: "High" },
-                { id: 45, ref: "Sec 12(2)", requirement: "Correct inaccurate or misleading data on request", action: "Create correction request workflow", priority: "Medium" },
-                { id: 46, ref: "Sec 12(3)", requirement: "Erase data on request (unless retention required)", action: "Implement account deletion feature", priority: "High" },
-            ]},
-            { section: "SECTION 13", title: "RIGHT OF GRIEVANCE REDRESSAL", items: [
-                { id: 47, ref: "Sec 13(1)", requirement: "Readily available grievance redressal means", action: "Create in-app grievance submission feature", priority: "High" },
-                { id: 48, ref: "Sec 13(2)", requirement: "Respond within prescribed period", action: "Define and meet response SLAs", priority: "High" },
-                { id: 49, ref: "Sec 13(3)", requirement: "Inform about escalation to Board", action: "Include Board escalation info in responses", priority: "Medium" },
-            ]},
-            { section: "SECTION 14", title: "RIGHT TO NOMINATE", items: [
-                { id: 50, ref: "Sec 14(1)", requirement: "Nomination mechanism for death/incapacity", action: "Create nominee registration feature", priority: "Low" },
-            ]},
-            { section: "SECTION 10", title: "SIGNIFICANT DATA FIDUCIARY (IF NOTIFIED)", items: [
-                { id: 51, ref: "Sec 10(1)", requirement: "Monitor notification as SDF", action: "Track government notifications", priority: "Medium" },
-                { id: 52, ref: "Sec 10(2)(a)", requirement: "Appoint India-based DPO (if SDF)", action: "Prepare DPO appointment process", priority: "Medium" },
-                { id: 53, ref: "Sec 10(2)(b)", requirement: "Appoint independent data auditor (if SDF)", action: "Identify potential audit firms", priority: "Low" },
-                { id: 54, ref: "Sec 10(2)(c)", requirement: "Data Protection Impact Assessment (if SDF)", action: "Create DPIA template and process", priority: "Low" },
-            ]},
-            { section: "SECTION 16", title: "CROSS-BORDER DATA TRANSFER", items: [
-                { id: 55, ref: "Sec 16(1)", requirement: "Monitor restricted countries/territories", action: "Track government notifications on restrictions", priority: "Medium" },
-                { id: 56, ref: "Sec 16", requirement: "Map all cross-border transfers", action: "Document AWS regions, processor locations", priority: "High" },
-                { id: 57, ref: "Sec 16", requirement: "Data localization readiness", action: "Plan for potential data residency requirements", priority: "Medium" },
-            ]},
-            { section: "SECTION 17", title: "EXEMPTIONS", items: [
-                { id: 58, ref: "Sec 17(3)", requirement: "Assess startup exemption eligibility", action: "Verify DPIIT startup recognition status", priority: "Medium" },
+            { section: "SECTION 11-13", title: "DATA PRINCIPAL RIGHTS", items: [
+                { id: 27, ref: "Sec 11(1)(a)", requirement: "Provide summary of personal data processed", action: "Create data access request feature", priority: "High" },
+                { id: 28, ref: "Sec 12(1)", requirement: "Right to correction, completion, updating, erasure", action: "Implement profile editing and deletion features", priority: "High" },
+                { id: 29, ref: "Sec 13(1)", requirement: "Readily available grievance redressal means", action: "Create in-app grievance submission feature", priority: "High" },
             ]},
         ];
 
@@ -1265,15 +625,12 @@
             { id: 4, category: "Contact Data", element: "Mobile Number", classification: "pii", basis: "Consent", purpose: "OTP, Notifications", storage: "MySQL on AWS", retention: "Until account deletion" },
             { id: 5, category: "Authentication", element: "Password (hashed)", classification: "sensitive", basis: "Consent", purpose: "Account security", storage: "MySQL on AWS", retention: "Until account deletion" },
             { id: 6, category: "Profile Data", element: "Photos", classification: "pii", basis: "Consent", purpose: "Profile display", storage: "AWS S3", retention: "Until account deletion" },
-            { id: 7, category: "Profile Data", element: "Preferences", classification: "non-pii", basis: "N/A", purpose: "Matching algorithm", storage: "MySQL on AWS", retention: "Until account deletion" },
-            { id: 8, category: "Usage Data", element: "Login History", classification: "non-pii", basis: "N/A", purpose: "Security, Analytics", storage: "MySQL on AWS", retention: "1 year" },
         ];
 
         const defaultProcessors = [
             { id: 1, name: "AWS", data: "All user data (encrypted)", purpose: "Infrastructure hosting", location: "Mumbai (ap-south-1)" },
             { id: 2, name: "SMS Gateway", data: "Mobile Number", purpose: "OTP delivery, Notifications", location: "Verify with provider" },
             { id: 3, name: "MoEngage", data: "Email, Mobile, Name", purpose: "Marketing, Engagement", location: "Verify with provider" },
-            { id: 4, name: "Payment Gateway", data: "Name, Contact (if applicable)", purpose: "Payment processing", location: "Verify with provider" },
         ];
 
         const defaultPenalties = [
@@ -1287,39 +644,30 @@
         const defaultRoadmap = [
             { id: 1, phase: "Phase 1", task: "Complete data inventory and mapping" },
             { id: 2, phase: "Phase 1", task: "Conduct gap assessment against DPDP" },
-            { id: 3, phase: "Phase 1", task: "Appoint DPO or authorized person" },
-            { id: 4, phase: "Phase 1", task: "Update privacy policy and notices" },
-            { id: 5, phase: "Phase 1", task: "Review and update vendor contracts" },
-            { id: 6, phase: "Phase 2", task: "Implement consent management system" },
-            { id: 7, phase: "Phase 2", task: "Deploy data subject request workflows" },
-            { id: 8, phase: "Phase 2", task: "Enable encryption and security controls" },
-            { id: 9, phase: "Phase 2", task: "Implement audit logging and monitoring" },
-            { id: 10, phase: "Phase 2", task: "Set up breach detection mechanisms" },
-            { id: 11, phase: "Phase 3", task: "Document all data processing procedures" },
-            { id: 12, phase: "Phase 3", task: "Train employees on DPDP compliance" },
-            { id: 13, phase: "Phase 3", task: "Establish grievance redressal process" },
-            { id: 14, phase: "Phase 3", task: "Create incident response procedures" },
-            { id: 15, phase: "Phase 4", task: "Regular compliance audits" },
-            { id: 16, phase: "Phase 4", task: "Monitor regulatory updates" },
-            { id: 17, phase: "Phase 4", task: "Annual security assessments" },
+            { id: 3, phase: "Phase 1", task: "Update privacy policy and notices" },
+            { id: 4, phase: "Phase 2", task: "Implement consent management system" },
+            { id: 5, phase: "Phase 2", task: "Deploy data subject request workflows" },
+            { id: 6, phase: "Phase 2", task: "Enable encryption and security controls" },
+            { id: 7, phase: "Phase 3", task: "Train employees on DPDP compliance" },
+            { id: 8, phase: "Phase 3", task: "Establish grievance redressal process" },
         ];
 
-        // Load data from localStorage or use defaults
+        // Load from localStorage or defaults
         let checklistData = JSON.parse(localStorage.getItem('dpdp_checklistData')) || JSON.parse(JSON.stringify(defaultChecklistData));
         let dataInventory = JSON.parse(localStorage.getItem('dpdp_dataInventory')) || JSON.parse(JSON.stringify(defaultDataInventory));
         let processors = JSON.parse(localStorage.getItem('dpdp_processors_list')) || JSON.parse(JSON.stringify(defaultProcessors));
         let penalties = JSON.parse(localStorage.getItem('dpdp_penalties_list')) || JSON.parse(JSON.stringify(defaultPenalties));
         let roadmap = JSON.parse(localStorage.getItem('dpdp_roadmap_list')) || JSON.parse(JSON.stringify(defaultRoadmap));
 
-        // State Management
         let itemStates = JSON.parse(localStorage.getItem('dpdp_compliance') || '{}');
         let processorStates = JSON.parse(localStorage.getItem('dpdp_processors') || '{}');
         let penaltyStates = JSON.parse(localStorage.getItem('dpdp_penalties') || '{}');
         let roadmapStates = JSON.parse(localStorage.getItem('dpdp_roadmap') || '{}');
 
-        // Initialize
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
         document.addEventListener('DOMContentLoaded', async function() {
-            // Show connection bar if API is configured
             if (GOOGLE_SHEETS_API_URL) {
                 document.getElementById('connection-bar').style.display = 'flex';
                 document.body.classList.add('has-connection-bar');
@@ -1328,13 +676,15 @@
                     document.getElementById('user-name-display').textContent = '👤 ' + currentUserName;
                 }
                 
-                // Try to load from Google Sheets first
                 const loaded = await loadFromGoogleSheets();
-                if (!loaded) {
-                    showToast('Using local data (Google Sheets unavailable)', 'warning');
+                if (loaded) {
+                    startAutoRefresh();
+                } else {
+                    showToast('Using local data', 'warning');
                 }
             }
             
+            updateAutoRefreshButton();
             renderChecklist();
             renderInventory();
             renderProcessors();
@@ -1343,9 +693,10 @@
             updateSummary();
         });
 
-        // Save all data
+        // ============================================================
+        // SAVE DATA
+        // ============================================================
         function saveAllData() {
-            // Always save to localStorage first (fast, offline backup)
             localStorage.setItem('dpdp_checklistData', JSON.stringify(checklistData));
             localStorage.setItem('dpdp_dataInventory', JSON.stringify(dataInventory));
             localStorage.setItem('dpdp_processors_list', JSON.stringify(processors));
@@ -1356,46 +707,18 @@
             localStorage.setItem('dpdp_penalties', JSON.stringify(penaltyStates));
             localStorage.setItem('dpdp_roadmap', JSON.stringify(roadmapStates));
         }
-        
-        // Sync single item to Google Sheets (called after individual updates)
-        async function syncItemToGoogleSheets(type, data) {
-            if (!GOOGLE_SHEETS_API_URL) return;
-            
-            try {
-                switch(type) {
-                    case 'checklist':
-                        await callGoogleSheetsAPI('updateChecklist', data);
-                        break;
-                    case 'inventory':
-                        await callGoogleSheetsAPI('updateInventory', { data: data });
-                        break;
-                    case 'processor':
-                        await callGoogleSheetsAPI('updateProcessor', { data: data });
-                        break;
-                    case 'penalty':
-                        await callGoogleSheetsAPI('updatePenalty', data);
-                        break;
-                    case 'roadmap':
-                        await callGoogleSheetsAPI('updateRoadmap', { data: data });
-                        break;
-                }
-            } catch (error) {
-                console.error('Sync error:', error);
-            }
-        }
 
-        // Get next ID
         function getNextItemId() {
             let maxId = 0;
             checklistData.forEach(section => {
-                section.items.forEach(item => {
-                    if (item.id > maxId) maxId = item.id;
-                });
+                section.items.forEach(item => { if (item.id > maxId) maxId = item.id; });
             });
             return maxId + 1;
         }
 
-        // Render Checklist
+        // ============================================================
+        // RENDER FUNCTIONS
+        // ============================================================
         function renderChecklist() {
             const container = document.getElementById('checklist-container');
             container.innerHTML = '';
@@ -1403,16 +726,15 @@
             checklistData.forEach((section, sectionIndex) => {
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'checklist-section';
-                sectionDiv.dataset.sectionIndex = sectionIndex;
                 
                 const header = document.createElement('div');
                 header.className = 'section-header';
                 header.innerHTML = `
                     <span onclick="toggleSection(this)">${section.section}: ${section.title} <span class="toggle-icon">▼</span></span>
                     <div class="section-header-actions">
-                        <button onclick="event.stopPropagation(); openItemModal(${sectionIndex})">+ Add Item</button>
-                        <button onclick="event.stopPropagation(); editSection(${sectionIndex})">✏️ Edit</button>
-                        <button onclick="event.stopPropagation(); deleteSection(${sectionIndex})">🗑️ Delete</button>
+                        <button onclick="event.stopPropagation(); openItemModal(${sectionIndex})">+ Add</button>
+                        <button onclick="event.stopPropagation(); editSection(${sectionIndex})">✏️</button>
+                        <button onclick="event.stopPropagation(); deleteSection(${sectionIndex})">🗑️</button>
                     </div>
                 `;
 
@@ -1421,7 +743,8 @@
 
                 section.items.forEach((item, itemIndex) => {
                     const state = itemStates[item.id] || { status: 'Not Started', owner: '' };
-                    const statusClass = state.status.toLowerCase().replace(/ /g, '-').replace('/', '');
+                    const statusClass = 'status-' + state.status.toLowerCase().replace(/ /g, '-').replace('/', '');
+                    
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'checklist-item';
                     itemDiv.dataset.id = item.id;
@@ -1433,7 +756,7 @@
                         <div class="item-section">${item.ref}</div>
                         <div class="item-requirement">${item.requirement}</div>
                         <div class="item-action">${item.action}</div>
-                        <select class="status-select status-${statusClass}" onchange="updateStatus(${item.id}, this.value)">
+                        <select class="status-select ${statusClass}" onchange="updateStatus(${item.id}, this.value)">
                             <option value="Not Started" ${state.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
                             <option value="In Progress" ${state.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                             <option value="Completed" ${state.status === 'Completed' ? 'selected' : ''}>Completed</option>
@@ -1444,10 +767,10 @@
                             <option value="Medium" ${item.priority === 'Medium' ? 'selected' : ''}>Medium</option>
                             <option value="Low" ${item.priority === 'Low' ? 'selected' : ''}>Low</option>
                         </select>
-                        <input type="text" placeholder="Owner / Remarks" value="${state.owner || ''}" onchange="updateOwner(${item.id}, this.value)">
+                        <input type="text" placeholder="Owner" value="${state.owner || ''}" onchange="updateOwner(${item.id}, this.value)">
                         <div class="item-actions">
-                            <button class="btn-icon edit" onclick="editItem(${sectionIndex}, ${itemIndex})" title="Edit">✏️</button>
-                            <button class="btn-icon delete" onclick="deleteItem(${sectionIndex}, ${itemIndex})" title="Delete">🗑️</button>
+                            <button class="btn-icon edit" onclick="editItem(${sectionIndex}, ${itemIndex})">✏️</button>
+                            <button class="btn-icon delete" onclick="deleteItem(${sectionIndex}, ${itemIndex})">🗑️</button>
                         </div>
                     `;
                     content.appendChild(itemDiv);
@@ -1465,14 +788,13 @@
             header.nextElementSibling.classList.toggle('collapsed');
         }
 
-        // Render Inventory
         function renderInventory() {
             const tbody = document.getElementById('inventory-body');
             tbody.innerHTML = '';
             
             dataInventory.forEach((item, index) => {
                 const badgeClass = item.classification === 'pii' ? 'pii' : item.classification === 'sensitive' ? 'sensitive' : 'non-pii';
-                const badgeText = item.classification === 'pii' ? 'Personal Data' : item.classification === 'sensitive' ? 'Sensitive Data' : 'Non-Personal';
+                const badgeText = item.classification === 'pii' ? 'PII' : item.classification === 'sensitive' ? 'Sensitive' : 'Non-PII';
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -1485,15 +807,14 @@
                     <td>${item.storage}</td>
                     <td>${item.retention}</td>
                     <td>
-                        <button class="btn-icon edit" onclick="editInventoryItem(${index})" title="Edit">✏️</button>
-                        <button class="btn-icon delete" onclick="deleteInventoryItem(${index})" title="Delete">🗑️</button>
+                        <button class="btn-icon edit" onclick="editInventoryItem(${index})">✏️</button>
+                        <button class="btn-icon delete" onclick="deleteInventoryItem(${index})">🗑️</button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
         }
 
-        // Render Processors
         function renderProcessors() {
             const container = document.getElementById('processors-container');
             container.innerHTML = '';
@@ -1503,14 +824,8 @@
                 const card = document.createElement('div');
                 card.className = 'processor-card';
                 card.innerHTML = `
-                    <div>
-                        <h4>${proc.name}</h4>
-                        <p><strong>Data:</strong> ${proc.data}</p>
-                    </div>
-                    <div>
-                        <p><strong>Purpose:</strong> ${proc.purpose}</p>
-                        <p><strong>Location:</strong> ${proc.location}</p>
-                    </div>
+                    <div><h4>${proc.name}</h4><p><strong>Data:</strong> ${proc.data}</p></div>
+                    <div><p><strong>Purpose:</strong> ${proc.purpose}</p><p><strong>Location:</strong> ${proc.location}</p></div>
                     <div>
                         <label>DPA Signed:</label>
                         <select onchange="updateProcessorState(${proc.id}, 'dpa', this.value)">
@@ -1530,20 +845,19 @@
                         </select>
                     </div>
                     <div>
-                        <button class="btn-icon edit" onclick="editProcessor(${index})" title="Edit">✏️</button>
-                        <button class="btn-icon delete" onclick="deleteProcessor(${index})" title="Delete">🗑️</button>
+                        <button class="btn-icon edit" onclick="editProcessor(${index})">✏️</button>
+                        <button class="btn-icon delete" onclick="deleteProcessor(${index})">🗑️</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // Render Penalties
         function renderPenalties() {
             const container = document.getElementById('penalties-container');
             container.innerHTML = '';
 
-            penalties.forEach((pen, index) => {
+            penalties.forEach((pen) => {
                 const state = penaltyStates[pen.id] || { risk: '', mitigation: '' };
                 const cardClass = state.mitigation === 'Mitigated' ? 'mitigated' : state.mitigation === 'Partial' ? 'partial' : '';
                 
@@ -1551,10 +865,7 @@
                 card.className = `penalty-card ${cardClass}`;
                 card.innerHTML = `
                     <div class="penalty-header">
-                        <div>
-                            <h4>${pen.breach}</h4>
-                            <p>${pen.section}</p>
-                        </div>
+                        <div><h4>${pen.breach}</h4><p>${pen.section}</p></div>
                         <div class="penalty-amount">${pen.amount}</div>
                     </div>
                     <div style="display:flex; gap:20px; margin-top:15px;">
@@ -1582,7 +893,6 @@
             });
         }
 
-        // Render Roadmap
         function renderRoadmap() {
             const tbody = document.getElementById('roadmap-body');
             tbody.innerHTML = '';
@@ -1599,41 +909,39 @@
                             <option value="Not Started" ${state.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
                             <option value="In Progress" ${state.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                             <option value="Completed" ${state.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                            <option value="Delayed" ${state.status === 'Delayed' ? 'selected' : ''}>Delayed</option>
                         </select>
                     </td>
                     <td><input type="text" value="${state.owner || ''}" onchange="updateRoadmapState(${item.id}, 'owner', this.value)" placeholder="Owner"></td>
                     <td><input type="date" value="${state.date || ''}" onchange="updateRoadmapState(${item.id}, 'date', this.value)"></td>
                     <td><input type="text" value="${state.notes || ''}" onchange="updateRoadmapState(${item.id}, 'notes', this.value)" placeholder="Notes"></td>
                     <td>
-                        <button class="btn-icon edit" onclick="editRoadmapItem(${index})" title="Edit">✏️</button>
-                        <button class="btn-icon delete" onclick="deleteRoadmapItem(${index})" title="Delete">🗑️</button>
+                        <button class="btn-icon edit" onclick="editRoadmapItem(${index})">✏️</button>
+                        <button class="btn-icon delete" onclick="deleteRoadmapItem(${index})">🗑️</button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
         }
 
-        // Update Functions
-        function updateStatus(id, value) {
+        // ============================================================
+        // UPDATE FUNCTIONS
+        // ============================================================
+        async function updateStatus(id, value) {
             if (!itemStates[id]) itemStates[id] = {};
             itemStates[id].status = value;
             saveAllData();
             
             const item = document.querySelector(`.checklist-item[data-id="${id}"]`);
-            const select = item.querySelector('.status-select');
-            select.className = `status-select status-${value.toLowerCase().replace(/ /g, '-').replace('/', '')}`;
-            item.dataset.status = value;
+            if (item) {
+                const select = item.querySelector('.status-select');
+                select.className = `status-select status-${value.toLowerCase().replace(/ /g, '-').replace('/', '')}`;
+                item.dataset.status = value;
+            }
             
             updateSummary();
             showToast('Status updated', 'success');
             
-            // Sync to Google Sheets
-            syncItemToGoogleSheets('checklist', { 
-                itemId: id, 
-                status: value, 
-                owner: itemStates[id].owner || '' 
-            });
+            await syncItemToGoogleSheets('checklist', { itemId: id, status: value, owner: itemStates[id].owner || '' });
         }
 
         function updateItemPriority(sectionIndex, itemIndex, value) {
@@ -1641,70 +949,47 @@
             saveAllData();
         }
 
-        function updateOwner(id, value) {
+        async function updateOwner(id, value) {
             if (!itemStates[id]) itemStates[id] = {};
             itemStates[id].owner = value;
             saveAllData();
             
-            // Sync to Google Sheets
-            syncItemToGoogleSheets('checklist', { 
-                itemId: id, 
-                status: itemStates[id].status || 'Not Started', 
-                owner: value 
-            });
+            await syncItemToGoogleSheets('checklist', { itemId: id, status: itemStates[id].status || 'Not Started', owner: value });
         }
 
-        function updateProcessorState(id, field, value) {
+        async function updateProcessorState(id, field, value) {
             if (!processorStates[id]) processorStates[id] = {};
             processorStates[id][field] = value;
             saveAllData();
             showToast('Processor updated', 'success');
             
-            // Sync to Google Sheets
             const proc = processors.find(p => p.id === id);
             if (proc) {
-                syncItemToGoogleSheets('processor', {
-                    ...proc,
-                    dpa: processorStates[id].dpa || '',
-                    status: processorStates[id].status || ''
-                });
+                await syncItemToGoogleSheets('processor', { ...proc, dpa: processorStates[id].dpa || '', status: processorStates[id].status || '' });
             }
         }
 
-        function updatePenaltyState(id, field, value) {
+        async function updatePenaltyState(id, field, value) {
             if (!penaltyStates[id]) penaltyStates[id] = {};
             penaltyStates[id][field] = value;
             saveAllData();
             renderPenalties();
-            showToast('Penalty assessment updated', 'success');
+            showToast('Penalty updated', 'success');
             
-            // Sync to Google Sheets
-            syncItemToGoogleSheets('penalty', {
-                id: id,
-                risk: penaltyStates[id].risk || '',
-                mitigation: penaltyStates[id].mitigation || ''
-            });
+            await syncItemToGoogleSheets('penalty', { id: id, risk: penaltyStates[id].risk || '', mitigation: penaltyStates[id].mitigation || '' });
         }
 
-        function updateRoadmapState(id, field, value) {
+        async function updateRoadmapState(id, field, value) {
             if (!roadmapStates[id]) roadmapStates[id] = {};
             roadmapStates[id][field] = value;
             saveAllData();
             
-            // Sync to Google Sheets
             const item = roadmap.find(r => r.id === id);
             if (item) {
-                syncItemToGoogleSheets('roadmap', {
-                    ...item,
-                    status: roadmapStates[id].status || '',
-                    owner: roadmapStates[id].owner || '',
-                    date: roadmapStates[id].date || '',
-                    notes: roadmapStates[id].notes || ''
-                });
+                await syncItemToGoogleSheets('roadmap', { ...item, ...roadmapStates[id] });
             }
         }
 
-        // Update Summary
         function updateSummary() {
             let total = 0, completed = 0, progress = 0, notStarted = 0, na = 0;
 
@@ -1737,7 +1022,9 @@
             document.getElementById('progress-na').style.width = (na / total * 100) + '%';
         }
 
-        // Modal Functions
+        // ============================================================
+        // MODAL FUNCTIONS
+        // ============================================================
         function openModal(content) {
             document.getElementById('modal-content').innerHTML = content;
             document.getElementById('modal-overlay').classList.add('show');
@@ -1748,66 +1035,37 @@
             document.getElementById('modal-overlay').classList.remove('show');
         }
 
-        // Admin Panel
         function openAdminPanel() {
             openModal(`
                 <h2>⚙️ Admin Panel</h2>
-                
-                <!-- Google Sheets Configuration -->
-                <div style="background:#E3F2FD; border:1px solid #BBDEFB; border-radius:8px; padding:15px 20px; margin-bottom:20px;">
+                <div style="background:#E3F2FD; border:1px solid #BBDEFB; border-radius:8px; padding:15px; margin-bottom:20px;">
                     <h4 style="color:#1565C0; margin-bottom:10px;">☁️ Google Sheets Integration</h4>
-                    <div class="form-group" style="margin-bottom:10px;">
-                        <label>Your Name (for tracking changes)</label>
+                    <div class="form-group">
+                        <label>Your Name</label>
                         <input type="text" id="admin-user-name" value="${currentUserName}" placeholder="Enter your name">
                     </div>
-                    <div class="form-group" style="margin-bottom:10px;">
-                        <label>Google Apps Script Web App URL</label>
+                    <div class="form-group">
+                        <label>Google Apps Script URL</label>
                         <input type="text" id="admin-api-url" value="${GOOGLE_SHEETS_API_URL}" placeholder="https://script.google.com/macros/s/xxx/exec">
-                        <div class="hint" style="font-size:12px; color:#666; margin-top:3px;">Deploy your Google Apps Script and paste the Web App URL here</div>
                     </div>
-                    <div style="display:flex; gap:10px;">
-                        <button class="btn btn-primary btn-small" onclick="saveGoogleSheetsConfig()">💾 Save & Connect</button>
-                        <button class="btn btn-secondary btn-small" onclick="testGoogleSheetsConnection()">🔌 Test Connection</button>
+                    <div class="form-group">
+                        <label>Auto-refresh Interval (seconds)</label>
+                        <input type="number" id="admin-refresh-interval" value="${autoRefreshSeconds}" min="10" max="300">
                     </div>
-                    <div id="connection-test-result" style="margin-top:10px; font-size:13px;"></div>
-                </div>
-                
-                <div class="admin-info">
-                    <div class="admin-info-icon">💡</div>
-                    <div class="admin-info-text">
-                        <h4>Tip</h4>
-                        <p>Use the buttons on each section header and item rows to add, edit, or delete items directly.</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <h4>Quick Actions</h4>
-                </div>
-                <div style="display:grid; gap:10px;">
-                    <button class="btn btn-primary" onclick="closeModal(event); openSectionModal()">+ Add New Section</button>
-                    <button class="btn btn-primary" onclick="closeModal(event); openInventoryModal()">+ Add Data Element</button>
-                    <button class="btn btn-primary" onclick="closeModal(event); openProcessorModal()">+ Add Processor</button>
-                    <button class="btn btn-primary" onclick="closeModal(event); openRoadmapModal()">+ Add Roadmap Task</button>
-                </div>
-                <hr style="margin:20px 0;">
-                <div class="form-group">
-                    <h4>Data Management</h4>
-                </div>
-                <div style="display:grid; gap:10px;">
-                    <button class="btn btn-export" onclick="exportToJSON()">💾 Backup All Data (JSON)</button>
-                    <button class="btn btn-export" onclick="exportToCSV()">📥 Export Checklist (CSV)</button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click(); closeModal(event);">📂 Import Backup (JSON)</button>
-                    <button class="btn btn-reset" onclick="if(confirm('Reset to default data? Your tracking progress will be kept.')) { resetToDefaults(); closeModal(event); }">🔄 Reset to Default Items</button>
+                    <button class="btn btn-primary btn-small" onclick="saveAdminSettings()">💾 Save Settings</button>
+                    <button class="btn btn-secondary btn-small" onclick="testConnection()">🔌 Test Connection</button>
+                    <div id="connection-test-result" style="margin-top:10px;"></div>
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" onclick="closeModal(event)">Close</button>
                 </div>
             `);
         }
-        
-        // Save Google Sheets Configuration
-        async function saveGoogleSheetsConfig() {
+
+        async function saveAdminSettings() {
             const userName = document.getElementById('admin-user-name').value.trim();
             const apiUrl = document.getElementById('admin-api-url').value.trim();
+            const refreshInterval = parseInt(document.getElementById('admin-refresh-interval').value) || 30;
             
             if (userName) {
                 currentUserName = userName;
@@ -1815,91 +1073,84 @@
                 document.getElementById('user-name-display').textContent = '👤 ' + userName;
             }
             
+            autoRefreshSeconds = refreshInterval;
+            localStorage.setItem('dpdp_auto_refresh_interval', refreshInterval);
+            
             if (apiUrl) {
                 GOOGLE_SHEETS_API_URL = apiUrl;
                 localStorage.setItem('dpdp_google_api_url', apiUrl);
-                
-                // Show connection bar
                 document.getElementById('connection-bar').style.display = 'flex';
                 document.body.classList.add('has-connection-bar');
                 
-                // Test connection and load data
-                const result = document.getElementById('connection-test-result');
-                result.innerHTML = '<span style="color:#1565C0;">⏳ Connecting...</span>';
-                
                 const loaded = await loadFromGoogleSheets();
                 if (loaded) {
-                    result.innerHTML = '<span style="color:#2E7D32;">✅ Connected! Data loaded from Google Sheets.</span>';
                     renderChecklist();
                     renderInventory();
                     renderProcessors();
                     renderPenalties();
                     renderRoadmap();
                     updateSummary();
-                    showToast('Connected to Google Sheets!', 'success');
+                    startAutoRefresh();
+                    showToast('Connected!', 'success');
                 } else {
-                    result.innerHTML = '<span style="color:#C62828;">❌ Could not connect. Check your URL and try again.</span>';
                     showToast('Connection failed', 'error');
                 }
             } else {
-                // Clear API URL
                 GOOGLE_SHEETS_API_URL = '';
                 localStorage.removeItem('dpdp_google_api_url');
-                document.getElementById('connection-bar').style.display = 'none';
-                document.body.classList.remove('has-connection-bar');
+                stopAutoRefresh();
                 setConnectionStatus('disconnected');
-                showToast('Google Sheets disconnected', 'warning');
             }
+            
+            closeModal({ target: { id: 'modal-overlay' } });
         }
-        
-        // Test Google Sheets Connection
-        async function testGoogleSheetsConnection() {
+
+        async function testConnection() {
             const apiUrl = document.getElementById('admin-api-url').value.trim();
             const result = document.getElementById('connection-test-result');
             
             if (!apiUrl) {
-                result.innerHTML = '<span style="color:#C62828;">❌ Please enter an API URL first</span>';
+                result.innerHTML = '<span style="color:#C62828;">Enter API URL first</span>';
                 return;
             }
             
-            result.innerHTML = '<span style="color:#1565C0;">⏳ Testing connection...</span>';
+            result.innerHTML = '<span style="color:#1565C0;">Testing...</span>';
             
             try {
                 const url = new URL(apiUrl);
                 url.searchParams.append('action', 'getAllData');
+                url.searchParams.append('_t', Date.now());
                 
-                const response = await fetch(url.toString());
+                const response = await fetch(url.toString(), { redirect: 'follow' });
                 const data = await response.json();
                 
                 if (data.success) {
-                    result.innerHTML = '<span style="color:#2E7D32;">✅ Connection successful! Click "Save & Connect" to use this URL.</span>';
+                    result.innerHTML = '<span style="color:#2E7D32;">✅ Connection successful!</span>';
                 } else {
-                    result.innerHTML = '<span style="color:#C62828;">❌ Connected but got error: ' + (data.error || 'Unknown error') + '</span>';
+                    result.innerHTML = '<span style="color:#C62828;">❌ Error: ' + (data.error || 'Unknown') + '</span>';
                 }
             } catch (error) {
-                result.innerHTML = '<span style="color:#C62828;">❌ Connection failed: ' + error.message + '</span>';
+                result.innerHTML = '<span style="color:#C62828;">❌ Failed: ' + error.message + '</span>';
             }
         }
 
-        // Section Modal
         function openSectionModal(editIndex = null) {
             const isEdit = editIndex !== null;
             const section = isEdit ? checklistData[editIndex] : { section: '', title: '' };
             
             openModal(`
-                <h2>${isEdit ? '✏️ Edit Section' : '+ Add New Section'}</h2>
+                <h2>${isEdit ? '✏️ Edit Section' : '+ Add Section'}</h2>
                 <div class="form-group">
                     <label>Section Code</label>
                     <input type="text" id="section-code" value="${section.section}" placeholder="e.g., SECTION 9">
-                    <div class="hint">Enter the DPDP Act section reference</div>
                 </div>
                 <div class="form-group">
                     <label>Section Title</label>
-                    <input type="text" id="section-title" value="${section.title}" placeholder="e.g., CHILDREN'S DATA PROCESSING">
+                    <input type="text" id="section-title" value="${section.title}" placeholder="e.g., CHILDREN'S DATA">
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
-                    <button class="btn btn-primary" onclick="saveSection(${editIndex})">${isEdit ? 'Update' : 'Add'} Section</button>
+                    <button class="btn btn-primary" onclick="saveSection(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
                 </div>
             `);
         }
@@ -1907,11 +1158,7 @@
         function saveSection(editIndex) {
             const code = document.getElementById('section-code').value.trim();
             const title = document.getElementById('section-title').value.trim();
-            
-            if (!code || !title) {
-                showToast('Please fill all fields', 'error');
-                return;
-            }
+            if (!code || !title) { showToast('Fill all fields', 'error'); return; }
 
             if (editIndex !== null) {
                 checklistData[editIndex].section = code;
@@ -1922,17 +1169,14 @@
 
             saveAllData();
             renderChecklist();
-            updateSummary();
             closeModal({ target: { id: 'modal-overlay' } });
-            showToast(editIndex !== null ? 'Section updated' : 'Section added', 'success');
+            showToast('Section saved', 'success');
         }
 
-        function editSection(index) {
-            openSectionModal(index);
-        }
+        function editSection(index) { openSectionModal(index); }
 
         function deleteSection(index) {
-            if (confirm(`Delete section "${checklistData[index].section}: ${checklistData[index].title}" and all its items?`)) {
+            if (confirm('Delete this section and all items?')) {
                 checklistData.splice(index, 1);
                 saveAllData();
                 renderChecklist();
@@ -1941,25 +1185,23 @@
             }
         }
 
-        // Item Modal
         function openItemModal(sectionIndex, editItemIndex = null) {
             const isEdit = editItemIndex !== null;
             const item = isEdit ? checklistData[sectionIndex].items[editItemIndex] : { ref: '', requirement: '', action: '', priority: 'High' };
             
             openModal(`
-                <h2>${isEdit ? '✏️ Edit Item' : '+ Add New Item'}</h2>
-                <p style="color:#666; margin-bottom:20px;">Section: ${checklistData[sectionIndex].section} - ${checklistData[sectionIndex].title}</p>
+                <h2>${isEdit ? '✏️ Edit Item' : '+ Add Item'}</h2>
                 <div class="form-group">
                     <label>Section Reference</label>
                     <input type="text" id="item-ref" value="${item.ref}" placeholder="e.g., Sec 8(5)">
                 </div>
                 <div class="form-group">
-                    <label>Compliance Requirement</label>
-                    <textarea id="item-requirement" placeholder="Describe the requirement...">${item.requirement}</textarea>
+                    <label>Requirement</label>
+                    <textarea id="item-requirement">${item.requirement}</textarea>
                 </div>
                 <div class="form-group">
-                    <label>Implementation Action</label>
-                    <textarea id="item-action" placeholder="Describe what needs to be done...">${item.action}</textarea>
+                    <label>Action</label>
+                    <textarea id="item-action">${item.action}</textarea>
                 </div>
                 <div class="form-group">
                     <label>Priority</label>
@@ -1971,7 +1213,7 @@
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
-                    <button class="btn btn-primary" onclick="saveItem(${sectionIndex}, ${editItemIndex})">${isEdit ? 'Update' : 'Add'} Item</button>
+                    <button class="btn btn-primary" onclick="saveItem(${sectionIndex}, ${editItemIndex})">${isEdit ? 'Update' : 'Add'}</button>
                 </div>
             `);
         }
@@ -1982,40 +1224,25 @@
             const action = document.getElementById('item-action').value.trim();
             const priority = document.getElementById('item-priority').value;
             
-            if (!ref || !requirement || !action) {
-                showToast('Please fill all fields', 'error');
-                return;
-            }
+            if (!ref || !requirement || !action) { showToast('Fill all fields', 'error'); return; }
 
             if (editItemIndex !== null) {
-                checklistData[sectionIndex].items[editItemIndex].ref = ref;
-                checklistData[sectionIndex].items[editItemIndex].requirement = requirement;
-                checklistData[sectionIndex].items[editItemIndex].action = action;
-                checklistData[sectionIndex].items[editItemIndex].priority = priority;
+                checklistData[sectionIndex].items[editItemIndex] = { ...checklistData[sectionIndex].items[editItemIndex], ref, requirement, action, priority };
             } else {
-                checklistData[sectionIndex].items.push({
-                    id: getNextItemId(),
-                    ref: ref,
-                    requirement: requirement,
-                    action: action,
-                    priority: priority
-                });
+                checklistData[sectionIndex].items.push({ id: getNextItemId(), ref, requirement, action, priority });
             }
 
             saveAllData();
             renderChecklist();
             updateSummary();
             closeModal({ target: { id: 'modal-overlay' } });
-            showToast(editItemIndex !== null ? 'Item updated' : 'Item added', 'success');
+            showToast('Item saved', 'success');
         }
 
-        function editItem(sectionIndex, itemIndex) {
-            openItemModal(sectionIndex, itemIndex);
-        }
+        function editItem(sectionIndex, itemIndex) { openItemModal(sectionIndex, itemIndex); }
 
         function deleteItem(sectionIndex, itemIndex) {
-            const item = checklistData[sectionIndex].items[itemIndex];
-            if (confirm(`Delete item #${item.id}: "${item.requirement.substring(0, 50)}..."?`)) {
+            if (confirm('Delete this item?')) {
                 checklistData[sectionIndex].items.splice(itemIndex, 1);
                 saveAllData();
                 renderChecklist();
@@ -2024,384 +1251,30 @@
             }
         }
 
-        // Inventory Modal
         function openInventoryModal(editIndex = null) {
             const isEdit = editIndex !== null;
-            const item = isEdit ? dataInventory[editIndex] : { category: '', element: '', classification: 'non-pii', basis: '', purpose: '', storage: '', retention: '' };
+            const item = isEdit ? dataInventory[editIndex] : { category: '', element: '', classification: 'pii', basis: '', purpose: '', storage: '', retention: '' };
             
             openModal(`
-                <h2>${isEdit ? '✏️ Edit Data Element' : '+ Add Data Element'}</h2>
+                <h2>${isEdit ? '✏️ Edit' : '+ Add'} Data Element</h2>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Category</label>
-                        <input type="text" id="inv-category" value="${item.category}" placeholder="e.g., Identity Data">
-                    </div>
-                    <div class="form-group">
-                        <label>Data Element</label>
-                        <input type="text" id="inv-element" value="${item.element}" placeholder="e.g., Full Name">
-                    </div>
+                    <div class="form-group"><label>Category</label><input type="text" id="inv-category" value="${item.category}"></div>
+                    <div class="form-group"><label>Element</label><input type="text" id="inv-element" value="${item.element}"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Classification</label>
+                    <div class="form-group"><label>Classification</label>
                         <select id="inv-classification">
-                            <option value="pii" ${item.classification === 'pii' ? 'selected' : ''}>Personal Data (PII)</option>
-                            <option value="sensitive" ${item.classification === 'sensitive' ? 'selected' : ''}>Sensitive Data</option>
-                            <option value="non-pii" ${item.classification === 'non-pii' ? 'selected' : ''}>Non-Personal Data</option>
+                            <option value="pii" ${item.classification === 'pii' ? 'selected' : ''}>PII</option>
+                            <option value="sensitive" ${item.classification === 'sensitive' ? 'selected' : ''}>Sensitive</option>
+                            <option value="non-pii" ${item.classification === 'non-pii' ? 'selected' : ''}>Non-PII</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Lawful Basis</label>
-                        <input type="text" id="inv-basis" value="${item.basis}" placeholder="e.g., Consent, N/A">
-                    </div>
+                    <div class="form-group"><label>Lawful Basis</label><input type="text" id="inv-basis" value="${item.basis}"></div>
                 </div>
-                <div class="form-group">
-                    <label>Purpose</label>
-                    <input type="text" id="inv-purpose" value="${item.purpose}" placeholder="e.g., Profile creation, Matching">
-                </div>
+                <div class="form-group"><label>Purpose</label><input type="text" id="inv-purpose" value="${item.purpose}"></div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Storage Location</label>
-                        <input type="text" id="inv-storage" value="${item.storage}" placeholder="e.g., MySQL on AWS">
-                    </div>
-                    <div class="form-group">
-                        <label>Retention Period</label>
-                        <input type="text" id="inv-retention" value="${item.retention}" placeholder="e.g., Until account deletion">
-                    </div>
+                    <div class="form-group"><label>Storage</label><input type="text" id="inv-storage" value="${item.storage}"></div>
+                    <div class="form-group"><label>Retention</label><input type="text" id="inv-retention" value="${item.retention}"></div>
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
-                    <button class="btn btn-primary" onclick="saveInventoryItem(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
-                </div>
-            `);
-        }
-
-        function saveInventoryItem(editIndex) {
-            const item = {
-                id: editIndex !== null ? dataInventory[editIndex].id : Date.now(),
-                category: document.getElementById('inv-category').value.trim(),
-                element: document.getElementById('inv-element').value.trim(),
-                classification: document.getElementById('inv-classification').value,
-                basis: document.getElementById('inv-basis').value.trim(),
-                purpose: document.getElementById('inv-purpose').value.trim(),
-                storage: document.getElementById('inv-storage').value.trim(),
-                retention: document.getElementById('inv-retention').value.trim()
-            };
-
-            if (!item.category || !item.element) {
-                showToast('Please fill required fields', 'error');
-                return;
-            }
-
-            if (editIndex !== null) {
-                dataInventory[editIndex] = item;
-            } else {
-                dataInventory.push(item);
-            }
-
-            saveAllData();
-            renderInventory();
-            closeModal({ target: { id: 'modal-overlay' } });
-            showToast(editIndex !== null ? 'Data element updated' : 'Data element added', 'success');
-            
-            // Sync to Google Sheets
-            syncItemToGoogleSheets('inventory', item);
-        }
-
-        function editInventoryItem(index) {
-            openInventoryModal(index);
-        }
-
-        function deleteInventoryItem(index) {
-            if (confirm(`Delete "${dataInventory[index].element}"?`)) {
-                dataInventory.splice(index, 1);
-                saveAllData();
-                renderInventory();
-                showToast('Data element deleted', 'success');
-            }
-        }
-
-        // Processor Modal
-        function openProcessorModal(editIndex = null) {
-            const isEdit = editIndex !== null;
-            const proc = isEdit ? processors[editIndex] : { name: '', data: '', purpose: '', location: '' };
-            
-            openModal(`
-                <h2>${isEdit ? '✏️ Edit Processor' : '+ Add Processor'}</h2>
-                <div class="form-group">
-                    <label>Processor Name</label>
-                    <input type="text" id="proc-name" value="${proc.name}" placeholder="e.g., AWS, MoEngage">
-                </div>
-                <div class="form-group">
-                    <label>Data Shared</label>
-                    <input type="text" id="proc-data" value="${proc.data}" placeholder="e.g., Email, Mobile Number">
-                </div>
-                <div class="form-group">
-                    <label>Purpose</label>
-                    <input type="text" id="proc-purpose" value="${proc.purpose}" placeholder="e.g., Marketing, Infrastructure">
-                </div>
-                <div class="form-group">
-                    <label>Data Location</label>
-                    <input type="text" id="proc-location" value="${proc.location}" placeholder="e.g., Mumbai, USA">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
-                    <button class="btn btn-primary" onclick="saveProcessor(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
-                </div>
-            `);
-        }
-
-        function saveProcessor(editIndex) {
-            const proc = {
-                id: editIndex !== null ? processors[editIndex].id : Date.now(),
-                name: document.getElementById('proc-name').value.trim(),
-                data: document.getElementById('proc-data').value.trim(),
-                purpose: document.getElementById('proc-purpose').value.trim(),
-                location: document.getElementById('proc-location').value.trim()
-            };
-
-            if (!proc.name) {
-                showToast('Please enter processor name', 'error');
-                return;
-            }
-
-            if (editIndex !== null) {
-                processors[editIndex] = proc;
-            } else {
-                processors.push(proc);
-            }
-
-            saveAllData();
-            renderProcessors();
-            closeModal({ target: { id: 'modal-overlay' } });
-            showToast(editIndex !== null ? 'Processor updated' : 'Processor added', 'success');
-            
-            // Sync to Google Sheets
-            syncItemToGoogleSheets('processor', proc);
-        }
-
-        function editProcessor(index) {
-            openProcessorModal(index);
-        }
-
-        function deleteProcessor(index) {
-            if (confirm(`Delete processor "${processors[index].name}"?`)) {
-                processors.splice(index, 1);
-                saveAllData();
-                renderProcessors();
-                showToast('Processor deleted', 'success');
-            }
-        }
-
-        // Roadmap Modal
-        function openRoadmapModal(editIndex = null) {
-            const isEdit = editIndex !== null;
-            const item = isEdit ? roadmap[editIndex] : { phase: 'Phase 1', task: '' };
-            
-            openModal(`
-                <h2>${isEdit ? '✏️ Edit Task' : '+ Add Task'}</h2>
-                <div class="form-group">
-                    <label>Phase</label>
-                    <select id="road-phase">
-                        <option value="Phase 1" ${item.phase === 'Phase 1' ? 'selected' : ''}>Phase 1 - Foundation</option>
-                        <option value="Phase 2" ${item.phase === 'Phase 2' ? 'selected' : ''}>Phase 2 - Technical Implementation</option>
-                        <option value="Phase 3" ${item.phase === 'Phase 3' ? 'selected' : ''}>Phase 3 - Process & Training</option>
-                        <option value="Phase 4" ${item.phase === 'Phase 4' ? 'selected' : ''}>Phase 4 - Continuous Compliance</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Task</label>
-                    <textarea id="road-task" placeholder="Describe the task...">${item.task}</textarea>
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal(event)">Cancel</button>
-                    <button class="btn btn-primary" onclick="saveRoadmapItem(${editIndex})">${isEdit ? 'Update' : 'Add'}</button>
-                </div>
-            `);
-        }
-
-        function saveRoadmapItem(editIndex) {
-            const item = {
-                id: editIndex !== null ? roadmap[editIndex].id : Date.now(),
-                phase: document.getElementById('road-phase').value,
-                task: document.getElementById('road-task').value.trim()
-            };
-
-            if (!item.task) {
-                showToast('Please enter task description', 'error');
-                return;
-            }
-
-            if (editIndex !== null) {
-                roadmap[editIndex] = item;
-            } else {
-                roadmap.push(item);
-            }
-
-            saveAllData();
-            renderRoadmap();
-            closeModal({ target: { id: 'modal-overlay' } });
-            showToast(editIndex !== null ? 'Task updated' : 'Task added', 'success');
-            
-            // Sync to Google Sheets
-            syncItemToGoogleSheets('roadmap', item);
-        }
-
-        function editRoadmapItem(index) {
-            openRoadmapModal(index);
-        }
-
-        function deleteRoadmapItem(index) {
-            if (confirm(`Delete task "${roadmap[index].task.substring(0, 50)}..."?`)) {
-                roadmap.splice(index, 1);
-                saveAllData();
-                renderRoadmap();
-                showToast('Task deleted', 'success');
-            }
-        }
-
-        // Tab Navigation
-        function showTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-            
-            event.target.classList.add('active');
-            document.getElementById('tab-' + tab).style.display = 'block';
-            document.getElementById('filter-bar').style.display = tab === 'checklist' ? 'flex' : 'none';
-        }
-
-        // Filter
-        function filterItems() {
-            const status = document.getElementById('filter-status').value;
-            const priority = document.getElementById('filter-priority').value;
-            const search = document.getElementById('search-box').value.toLowerCase();
-
-            document.querySelectorAll('.checklist-item').forEach(item => {
-                const itemStatus = itemStates[item.dataset.id]?.status || 'Not Started';
-                const itemPriority = item.dataset.priority;
-                const text = item.textContent.toLowerCase();
-
-                const matchStatus = status === 'all' || itemStatus === status;
-                const matchPriority = priority === 'all' || itemPriority === priority;
-                const matchSearch = !search || text.includes(search);
-
-                item.style.display = matchStatus && matchPriority && matchSearch ? 'grid' : 'none';
-            });
-        }
-
-        // Export Functions
-        function exportToCSV() {
-            let csv = 'Sr No,Section,Requirement,Action,Status,Priority,Owner/Remarks\n';
-            
-            checklistData.forEach(section => {
-                section.items.forEach(item => {
-                    const state = itemStates[item.id] || { status: 'Not Started', owner: '' };
-                    csv += `${item.id},"${item.ref}","${item.requirement.replace(/"/g, '""')}","${item.action.replace(/"/g, '""')}","${state.status}","${item.priority}","${(state.owner || '').replace(/"/g, '""')}"\n`;
-                });
-            });
-
-            downloadFile(csv, 'DPDP_Compliance_Export.csv', 'text/csv');
-            showToast('CSV exported', 'success');
-        }
-
-        function exportToJSON() {
-            const exportData = {
-                exportDate: new Date().toISOString(),
-                version: '2.0',
-                checklistData: checklistData,
-                dataInventory: dataInventory,
-                processors: processors,
-                penalties: penalties,
-                roadmap: roadmap,
-                itemStates: itemStates,
-                processorStates: processorStates,
-                penaltyStates: penaltyStates,
-                roadmapStates: roadmapStates
-            };
-            
-            downloadFile(JSON.stringify(exportData, null, 2), 'DPDP_Compliance_Backup.json', 'application/json');
-            showToast('Backup exported', 'success');
-        }
-
-        function importFromJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    
-                    if (data.checklistData) checklistData = data.checklistData;
-                    if (data.dataInventory) dataInventory = data.dataInventory;
-                    if (data.processors) processors = data.processors;
-                    if (data.penalties) penalties = data.penalties;
-                    if (data.roadmap) roadmap = data.roadmap;
-                    if (data.itemStates) itemStates = data.itemStates;
-                    if (data.processorStates) processorStates = data.processorStates;
-                    if (data.penaltyStates) penaltyStates = data.penaltyStates;
-                    if (data.roadmapStates) roadmapStates = data.roadmapStates;
-
-                    saveAllData();
-                    renderChecklist();
-                    renderInventory();
-                    renderProcessors();
-                    renderPenalties();
-                    renderRoadmap();
-                    updateSummary();
-                    
-                    showToast('Data imported successfully', 'success');
-                } catch (err) {
-                    showToast('Invalid backup file', 'error');
-                }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        function downloadFile(content, filename, type) {
-            const blob = new Blob([content], { type });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        // Reset Functions
-        function resetAll() {
-            if (confirm('Reset ALL data including your tracking progress? This cannot be undone.')) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
-
-        function resetToDefaults() {
-            checklistData = JSON.parse(JSON.stringify(defaultChecklistData));
-            dataInventory = JSON.parse(JSON.stringify(defaultDataInventory));
-            processors = JSON.parse(JSON.stringify(defaultProcessors));
-            penalties = JSON.parse(JSON.stringify(defaultPenalties));
-            roadmap = JSON.parse(JSON.stringify(defaultRoadmap));
-            
-            saveAllData();
-            renderChecklist();
-            renderInventory();
-            renderProcessors();
-            renderPenalties();
-            renderRoadmap();
-            updateSummary();
-            
-            showToast('Reset to defaults (progress kept)', 'success');
-        }
-
-        // Toast
-        function showToast(message, type = '') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show ' + type;
-            setTimeout(() => toast.classList.remove('show'), 2000);
-        }
-    </script>
-</body>
-</html>
